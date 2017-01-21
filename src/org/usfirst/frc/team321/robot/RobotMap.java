@@ -8,7 +8,8 @@ package org.usfirst.frc.team321.robot;
  * floating around.
  */
 public class RobotMap {
-
+	
+	//Drivetrain Motors
 	public static final int LEFT_FRONT_MOTOR = 0;
 	public static final int LEFT_BACK_MOTOR = 0;
 	
@@ -20,6 +21,9 @@ public class RobotMap {
 	
 	public static final int RIGHT_ENCODER_A = 0;
 	public static final int RIGHT_ENCODER_B = 0;
+	
+	//Subsystem Motors
+	public static final int CLIMB_MOTOR = 0;
 	
 	
 	// For example to map the left and right motors, you could define the
