@@ -25,6 +25,8 @@ public class RobotMap {
 	//Subsystem Motors
 	public static final int CLIMB_MOTOR = 0;
 	
+	public static final int COMPRESSOR = 0;
+	
 	
 	// For example to map the left and right motors, you could define the
 	// following variables to use with your drivetrain subsystem.

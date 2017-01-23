@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
+import org.usfirst.frc.team321.robot.commands.ClimbSwitch;
 import org.usfirst.frc.team321.robot.commands.ExampleCommand;
+import org.usfirst.frc.team321.robot.commands.SwitchGear;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -31,6 +33,7 @@ public class OI {
 				maniBtn[i] = new JoystickButton(maniStick, i + 1);
 			}
 			
+			driveBtn[1].whenPressed(new ClimbSwitch());
 		}
 	
 	//// CREATING BUTTONS

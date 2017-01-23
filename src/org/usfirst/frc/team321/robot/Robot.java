@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team321.robot.commands.ExampleCommand;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +23,7 @@ public class Robot extends IterativeRobot {
 
 	public static final Drivetrain exampleSubsystem = new Drivetrain();
 	public static OI oi;
+	public static Pneumatics pneumatics;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -113,4 +115,5 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
+	
 }
