@@ -79,5 +79,3 @@ public class JoystickUltil {
 		return RobotUtil.squareAndKeepSign(getRightTrigger());
 	}
 }
-
-}

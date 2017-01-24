@@ -85,8 +85,7 @@ public Drivetrain () {
 		setLeftPowers(power);
 		setRightPowers(-power);
 	}
-	
-	    }
+}
 
 
 
