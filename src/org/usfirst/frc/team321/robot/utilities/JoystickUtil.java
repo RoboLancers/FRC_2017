@@ -3,7 +3,7 @@ package org.usfirst.frc.team321.robot.utilities;
 import org.usfirst.frc.team321.robot.OI;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
-public class JoystickUltil {
+public class JoystickUtil {
 	
 	public final static double tolerance = 0.15;
 
