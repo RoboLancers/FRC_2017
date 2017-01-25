@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team321.robot.commands.ExampleCommand;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
+import org.usfirst.frc.team321.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,11 +22,11 @@ import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
  */
 public class Robot extends IterativeRobot {
 
-	public static final Drivetrain exampleSubsystem = new Drivetrain();
 	public static Pneumatics pneumatics;
 	public static Drivetrain drivetrain;
 	public static OI oi;
-
+	public static Shooter shooter;
+	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -37,8 +37,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		pneumatics = new Pneumatics();
+		drivetrain = new Drivetrain();
+		shooter = new Shooter();
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 
