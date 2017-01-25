@@ -1,15 +1,19 @@
 package org.usfirst.frc.team321.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team321.robot.commands.BallShoot;
 import org.usfirst.frc.team321.robot.commands.ClimbSwitch;
 import org.usfirst.frc.team321.robot.commands.ExampleCommand;
+<<<<<<< HEAD
 import org.usfirst.frc.team321.robot.commands.IntakeBall;
 import org.usfirst.frc.team321.robot.commands.SwitchGear;
 import org.usfirst.frc.team321.robot.subsystems.Intake.IntakeValues;
+=======
+>>>>>>> c1e06f65eb06b4871e79e29251a1814e54b03494
 
 /**
  * This class is the glue that binds the controls on the physical operator

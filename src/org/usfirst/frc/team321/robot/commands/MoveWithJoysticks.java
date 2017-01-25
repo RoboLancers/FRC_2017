@@ -2,7 +2,7 @@ package org.usfirst.frc.team321.robot.commands;
 
 import org.usfirst.frc.team321.robot.Robot;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team321.robot.utilities.JoystickUltil;
+import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,8 +21,8 @@ public class MoveWithJoysticks extends Command{
 	}
 	
 	protected void execute(){
-		drivetrain.setLeftPowers(JoystickUltil.getLeftYAxisNormalized());
-   		drivetrain.setRightPowers(JoystickUltil.getRightYAxisNormalized());
+		drivetrain.setLeftPowers(JoystickUtil.getLeftYAxisNormalized());
+   		drivetrain.setRightPowers(JoystickUtil.getRightYAxisNormalized());
 	}
 
 	@Override

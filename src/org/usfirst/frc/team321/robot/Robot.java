@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,8 +26,15 @@ public class Robot extends IterativeRobot {
 	public static Pneumatics pneumatics;
 	public static Drivetrain drivetrain;
 	public static OI oi;
+<<<<<<< HEAD
 	public static Shooter shooter;
 	
+=======
+	public static NetworkTable networkTable;
+	
+	public static double angleOffset;
+
+>>>>>>> c1e06f65eb06b4871e79e29251a1814e54b03494
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -41,6 +49,9 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		shooter = new Shooter();
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		networkTable = NetworkTable.getTable("jetson");
+		networkTable.putNumber("Turn Angle", 0);
 	}
 
 	/**
@@ -90,6 +101,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		angleOffset = networkTable.getNumber("angletogoal", 0);
+		SmartDashboard.putNumber("Angle to target", angleOffset);
+		
 		Scheduler.getInstance().run();
 	}
 
@@ -108,6 +122,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		angleOffset = networkTable.getNumber("angletogoal", 0);
+		SmartDashboard.putNumber("Angle to target", angleOffset);
+		
 		Scheduler.getInstance().run();
 	}
 

@@ -61,4 +61,3 @@ public static double range(double input, double min, double max){
 	    return values;
 	}
 }
-}
