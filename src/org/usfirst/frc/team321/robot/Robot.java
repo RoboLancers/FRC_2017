@@ -2,6 +2,7 @@
 package org.usfirst.frc.team321.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -10,9 +11,15 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
+import org.usfirst.frc.team321.robot.utilities.LancerServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,17 +33,16 @@ public class Robot extends IterativeRobot {
 	public static Pneumatics pneumatics;
 	public static Drivetrain drivetrain;
 	public static OI oi;
-<<<<<<< HEAD
 	public static Shooter shooter;
-	
-=======
 	public static NetworkTable networkTable;
 	
 	public static double angleOffset;
-
->>>>>>> c1e06f65eb06b4871e79e29251a1814e54b03494
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
+	
+	BufferedReader in;
+    PrintWriter out;
+    LancerServer server;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -49,6 +55,24 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		shooter = new Shooter();
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		Thread thread = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					server = new LancerServer(5800);
+					server.startServer();
+					in = new BufferedReader(new InputStreamReader(server.getSocket().getInputStream()));
+					out = new PrintWriter(server.getSocket().getOutputStream(),true);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		thread.start();
 		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putNumber("Turn Angle", 0);
@@ -124,6 +148,13 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		angleOffset = networkTable.getNumber("angletogoal", 0);
 		SmartDashboard.putNumber("Angle to target", angleOffset);
+		
+		try {
+			SmartDashboard.putString("Backup", server.readFromClient(in));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		Scheduler.getInstance().run();
 	}
