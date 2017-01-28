@@ -39,10 +39,6 @@ public class Robot extends IterativeRobot {
 	public static double angleOffset;
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
-	
-	BufferedReader in;
-    PrintWriter out;
-    LancerServer server;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -55,24 +51,6 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		shooter = new Shooter();
 		SmartDashboard.putData("Auto mode", chooser);
-		
-		Thread thread = new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				try {
-					server = new LancerServer(5800);
-					server.startServer();
-					in = new BufferedReader(new InputStreamReader(server.getSocket().getInputStream()));
-					out = new PrintWriter(server.getSocket().getOutputStream(),true);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-		});
-		thread.start();
 		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putNumber("Turn Angle", 0);
@@ -148,13 +126,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		angleOffset = networkTable.getNumber("angletogoal", 0);
 		SmartDashboard.putNumber("Angle to target", angleOffset);
-		
-		try {
-			SmartDashboard.putString("Backup", server.readFromClient(in));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		Scheduler.getInstance().run();
 	}
