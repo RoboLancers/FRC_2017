@@ -1,25 +1,17 @@
 
 package org.usfirst.frc.team321.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
+import org.usfirst.frc.team321.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-
-import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
-import org.usfirst.frc.team321.robot.subsystems.Shooter;
-import org.usfirst.frc.team321.robot.utilities.LancerServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,8 +29,9 @@ public class Robot extends IterativeRobot {
 	public static NetworkTable networkTable;
 	
 	public static double angleOffset;
+	public static byte[] imageByte = new byte[3];;
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	SendableChooser chooser = new SendableChooser();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -52,8 +45,10 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		SmartDashboard.putData("Auto mode", chooser);
 		
+		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putNumber("Turn Angle", 0);
+		networkTable.putRaw("Image", imageByte);
 	}
 
 	/**
@@ -84,7 +79,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
+		autonomousCommand = (Command) chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -127,6 +122,8 @@ public class Robot extends IterativeRobot {
 		angleOffset = networkTable.getNumber("angletogoal", 0);
 		SmartDashboard.putNumber("Angle to target", angleOffset);
 		
+		imageByte = networkTable.getRaw("Image", imageByte);
+
 		Scheduler.getInstance().run();
 	}
 
