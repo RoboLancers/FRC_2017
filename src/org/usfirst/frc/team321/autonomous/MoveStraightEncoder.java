@@ -1,18 +1,15 @@
-package org.usfirst.frc.team321.robot.commands;
+package org.usfirst.frc.team321.autonomous;
 
 import org.usfirst.frc.team321.robot.Robot;
 import org.usfirst.frc.team321.robot.utilities.PIDConstant;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveStraightForward extends Command {
+public class MoveStraightEncoder extends Command {
 
     double rightPower, leftPower;
     double distanceInMeters;
     double encoderRotation;
-    double timeToMove;
-    double startTime;
     boolean leftFinished, rightFinished;
 
     double lastError;
@@ -27,20 +24,17 @@ public class MoveStraightForward extends Command {
      * @param time
      *            How long to move in seconds
      */
-    public MoveStraightForward(double distance, double power, double time) {
-    	
+    public MoveStraightEncoder(double distance, double power) {
 		requires(Robot.drivetrain);
 		this.distanceInMeters = distance;
 		this.leftPower = power;
 		this.rightPower = power;
-		this.timeToMove = time;
     }
 
     @Override
     protected void initialize() {
 		lastError = 0;
 		Robot.drivetrain.clearEncoder();
-		startTime = Timer.getFPGATimestamp();
 		encoderRotation = Math.abs(Robot.drivetrain.distanceToEncDegrees(distanceInMeters));
     }
 
@@ -55,10 +49,6 @@ public class MoveStraightForward extends Command {
 	
 		Robot.drivetrain.setRightPowers(rightPower);
 		Robot.drivetrain.setLeftPowers(leftPower);
-		
-		if (timeToMove != 0 && Timer.getFPGATimestamp() - startTime > timeToMove) {
-			Robot.drivetrain.stopMotors();
-		}
     }
 
     @Override

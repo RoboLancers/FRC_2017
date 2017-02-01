@@ -1,8 +1,20 @@
 
 package org.usfirst.frc.team321.robot;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+
+import org.usfirst.frc.team321.autonomous.MoveForwardTime;
+import org.usfirst.frc.team321.autonomous.MoveStraightWithEncoder;
+import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team321.robot.subsystems.Intake;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
+import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -25,11 +37,17 @@ public class Robot extends IterativeRobot {
 	public static Pneumatics pneumatics;
 	public static Drivetrain drivetrain;
 	public static OI oi;
+	public static Climber climber;
 	public static Shooter shooter;
+	public static Intake intake;
+	public static Sensors sensors;
+	
 	public static NetworkTable networkTable;
+	//BufferedImage image;
+	//InputStream inputStream;
 	
 	public static double angleOffset;
-	public static byte[] imageByte = new byte[3];;
+	//public static byte[] imageByte = new byte[3];
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser();
 
@@ -39,16 +57,25 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		oi = new OI();
 		pneumatics = new Pneumatics();
 		drivetrain = new Drivetrain();
 		shooter = new Shooter();
+		climber = new Climber();
+		intake = new Intake();
+		sensors = new Sensors();
+		oi = new OI();
+		
+		chooser = new SendableChooser();
+		
 		SmartDashboard.putData("Auto mode", chooser);
 		
+		//chooser.addDefault("No Autonomous Code", null);
+		//chooser.addObject("Move Straight Forward", new MoveStraightWithEncoder());
 		
-		networkTable = NetworkTable.getTable("jetson");
-		networkTable.putNumber("Turn Angle", 0);
-		networkTable.putRaw("Image", imageByte);
+		//networkTable = NetworkTable.getTable("jetson");
+		//networkTable.putNumber("Turn Angle", 0);
+		//networkTable.putRaw("Image", imageByte);
+		
 	}
 
 	/**
@@ -79,6 +106,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		sensors.resetNavX();
+		
 		autonomousCommand = (Command) chooser.getSelected();
 
 		/*
@@ -98,9 +127,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		angleOffset = networkTable.getNumber("angletogoal", 0);
-		SmartDashboard.putNumber("Angle to target", angleOffset);
-		
+			//angleOffset = networkTable.getNumber("angletogoal", 0);
+			//SmartDashboard.putNumber("Angle to target", angleOffset);
 		Scheduler.getInstance().run();
 	}
 
@@ -110,6 +138,8 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		sensors.resetNavX();
+		
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}
@@ -119,15 +149,28 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		angleOffset = networkTable.getNumber("angletogoal", 0);
-		SmartDashboard.putNumber("Angle to target", angleOffset);
-		
-		imageByte = networkTable.getRaw("Image", imageByte);
+//		angleOffset = networkTable.getNumber("angletogoal", 0);
+//		SmartDashboard.putNumber("Angle to target", angleOffset);
+//		
+//		imageByte = networkTable.getRaw("Image", imageByte);
+//		inputStream = new ByteArrayInputStream(imageByte);
+//		try {
+//			image = ImageIO.read(inputStream);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		SmartDashboard.putNumber("Left Motor Speed", sensors.moveInHeading(0, 90)[0]);
+		SmartDashboard.putNumber("Right Motor Speed", sensors.moveInHeading(0, 90)[1]);
+		SmartDashboard.putNumber("Angle", sensors.navX.getAngle());
 
 		Scheduler.getInstance().run();
 	}
 
-	/**
+	/**10.7
+	 * 25.5
+	 * 
+	 * 
 	 * This function is called periodically during test mode
 	 */
 	@Override
