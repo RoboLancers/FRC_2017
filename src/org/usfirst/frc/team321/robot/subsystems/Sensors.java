@@ -2,6 +2,8 @@ package org.usfirst.frc.team321.robot.subsystems;
 
 import java.util.Arrays;
 
+import org.usfirst.frc.team321.robot.utilities.RobotUtil;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SerialPort;
@@ -18,6 +20,9 @@ public class Sensors extends Subsystem {
 	public Sensors() {
 		navX = new AHRS(SerialPort.Port.kMXP);
 		ultrasonic = new SerialPort(9600, SerialPort.Port.kOnboard, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
+		
+		navX.reset();
+		navX.resetDisplacement();
 		
 		for(int x = 0; x < ultrasonicBuffer.length - 1; x++) {
 			ultrasonicBuffer[x] = "";
@@ -67,6 +72,24 @@ public class Sensors extends Subsystem {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+	
+	public double[] moveInHeading(double power, double degrees) {
+		double[] motorSpeed = new double[2];
+		
+		motorSpeed[0] = RobotUtil.range(power - (navX.getAngle() - degrees)/100, -1, 1);
+	    motorSpeed[1] = RobotUtil.range(power + (navX.getAngle() - degrees)/100, -1, 1);
+	    
+	    return motorSpeed;
+	}
+	
+	public double getRobotAngle() {
+		return navX.getAngle();
+	}
+	
+	public void resetNavX() {
+		navX.reset();
+		navX.resetDisplacement();
 	}
 	
 	@Override
