@@ -1,15 +1,7 @@
 
 package org.usfirst.frc.team321.robot;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
-import org.usfirst.frc.team321.autonomous.MoveForwardTime;
-import org.usfirst.frc.team321.autonomous.MoveStraightWithEncoder;
+import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team321.robot.subsystems.Intake;
@@ -41,13 +33,11 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Intake intake;
 	public static Sensors sensors;
+	public static Camera camera;
 	
 	public static NetworkTable networkTable;
-	//BufferedImage image;
-	//InputStream inputStream;
-	
 	public static double angleOffset;
-	//public static byte[] imageByte = new byte[3];
+	
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser();
 
@@ -63,6 +53,7 @@ public class Robot extends IterativeRobot {
 		climber = new Climber();
 		intake = new Intake();
 		sensors = new Sensors();
+		camera = new Camera();
 		oi = new OI();
 		
 		chooser = new SendableChooser();
@@ -72,10 +63,9 @@ public class Robot extends IterativeRobot {
 		//chooser.addDefault("No Autonomous Code", null);
 		//chooser.addObject("Move Straight Forward", new MoveStraightWithEncoder());
 		
-		//networkTable = NetworkTable.getTable("jetson");
-		//networkTable.putNumber("Turn Angle", 0);
-		//networkTable.putRaw("Image", imageByte);
-		
+		networkTable = NetworkTable.getTable("jetson");
+		networkTable.putString("Angle to Gear", "Not Detected");
+		networkTable.putString("Angle to Boiler", "Not Detected");
 	}
 
 	/**
@@ -149,17 +139,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-//		angleOffset = networkTable.getNumber("angletogoal", 0);
-//		SmartDashboard.putNumber("Angle to target", angleOffset);
-//		
-//		imageByte = networkTable.getRaw("Image", imageByte);
-//		inputStream = new ByteArrayInputStream(imageByte);
-//		try {
-//			image = ImageIO.read(inputStream);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		
+		if(camera.gearTargetDetected()){
+			SmartDashboard.putString("Angle to Gear", networkTable.getString("Angle to Gear", "Not Detected"));
+		}
+		
+		if(camera.boilerTargetDetected()){
+			SmartDashboard.putString("Angle to Boiler", networkTable.getString("Angle to Boiler", "Not Detected"));
+		}
+		
 		SmartDashboard.putNumber("Left Motor Speed", sensors.moveInHeading(0, 90)[0]);
 		SmartDashboard.putNumber("Right Motor Speed", sensors.moveInHeading(0, 90)[1]);
 		SmartDashboard.putNumber("Angle", sensors.navX.getAngle());
