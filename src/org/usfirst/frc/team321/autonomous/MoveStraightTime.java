@@ -4,7 +4,7 @@ import org.usfirst.frc.team321.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveForwardTime extends Command {
+public class MoveStraightTime extends Command {
 	
 	public double degrees;
 	public double power;
@@ -16,7 +16,7 @@ public class MoveForwardTime extends Command {
 	 * Instructions to move robot straight forward with the navX sensor
 	 * Set power to 0 to turn in place.
 	 */
-	public MoveForwardTime(double power, double degrees, double seconds) {
+	public MoveStraightTime(double power, double degrees, double seconds) {
 		requires(Robot.drivetrain);
 		requires(Robot.sensors);
 		this.power = power;
