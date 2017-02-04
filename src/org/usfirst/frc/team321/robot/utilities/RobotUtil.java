@@ -2,8 +2,7 @@ package org.usfirst.frc.team321.robot.utilities;
 
 public class RobotUtil {
 
-public static double range(double input, double min, double max){
-		
+	public static double range(double input, double min, double max){
 		if(input > max){
 			return max;
 		}else if(input < min){
@@ -11,6 +10,18 @@ public static double range(double input, double min, double max){
 		}else{
 			return input;
 		}
+	}
+
+	public static double floor(double num, int places) {
+		double multiplier = 1;
+		
+		for(int x = 0; x < places; x++) {
+			multiplier *= 10;
+		}
+		
+		num *= multiplier;
+		
+		return (int)num / multiplier;
 	}
 	
 	public static double squareAndKeepSign(double num){	

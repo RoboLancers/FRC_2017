@@ -80,11 +80,26 @@ public class Sensors extends Subsystem {
 		motorSpeed[0] = RobotUtil.range(power - (navX.getAngle() - degrees)/100, -1, 1);
 	    motorSpeed[1] = RobotUtil.range(power + (navX.getAngle() - degrees)/100, -1, 1);
 	    
+	    motorSpeed[0] = RobotUtil.floor(motorSpeed[0], 2);
+	    motorSpeed[1] = RobotUtil.floor(motorSpeed[1], 2);
+	    
 	    return motorSpeed;
 	}
 	
 	public double getRobotAngle() {
-		return navX.getAngle();
+		return RobotUtil.floor(navX.getAngle(), 2);
+	}
+	
+	public double getRobotHeading() {
+		if (navX.getAngle() < 0) {
+			return RobotUtil.floor(360 - Math.abs(navX.getAngle() % 360), 2);
+		} else {
+			return RobotUtil.floor(navX.getAngle() % 360, 2);
+		}
+	}
+	
+	public double getRobotVelocity() {
+		return RobotUtil.floor(Math.hypot(navX.getVelocityX(), navX.getVelocityY()), 2);
 	}
 	
 	public void resetNavX() {
