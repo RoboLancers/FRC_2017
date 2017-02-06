@@ -1,24 +1,20 @@
 package org.usfirst.frc.team321.robot.subsystems;
 
-import org.usfirst.frc.team321.robot.RobotMap;
-import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.Encoder;
+import org.usfirst.frc.team321.robot.commands.ClimbSwitch;
 
-public class Climber {
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+public class Climber extends Subsystem {
 	
-	public CANTalon climbMotor;
-	public Encoder climbEncoder;
+	public DoubleSolenoid leftClimberToggle, rightClimberToggle;
+	
 	public Climber(){
-		
-		climbMotor = new CANTalon(RobotMap.CLIMB_MOTOR);
-	}
-	
-	public void setPower(int power){
-		climbMotor.set(power);
+		leftClimberToggle = new DoubleSolenoid(4,5);
+		rightClimberToggle = new DoubleSolenoid(6,7);
 	}
 	
 	public void initDefaultCommand(){
-		//setDefaultCommand(CLIMBER_COMMAND);
 	}
 	
 }

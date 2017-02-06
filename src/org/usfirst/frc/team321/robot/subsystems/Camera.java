@@ -2,11 +2,27 @@ package org.usfirst.frc.team321.robot.subsystems;
 
 import org.usfirst.frc.team321.robot.Robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Camera extends Subsystem {
 	
-	public Camera(){	
+	UsbCamera camera;
+	MjpegServer mjpegServer;
+	CvSink cvSink;
+	CvSource output;
+	
+	public Camera(){
+		camera = new UsbCamera("Driver Camera 0", 0);
+		mjpegServer = new MjpegServer("Driver Server 0", 1180);
+		mjpegServer.setSource(camera);
+		cvSink = new CvSink("CV Driver Camera 0");
+		cvSink.setSource(camera);
+		output = new CvSource("Driver Cam", PixelFormat.kMJPEG, 1280, 720, 30);
 	}
 	
 	public boolean gearTargetDetected(){

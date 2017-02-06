@@ -75,15 +75,7 @@ public class Sensors extends Subsystem {
 	}
 	
 	public double[] moveInHeading(double power, double degrees) {
-		double[] motorSpeed = new double[2];
-		
-		motorSpeed[0] = RobotUtil.range(power - (navX.getAngle() - degrees)/100, -1, 1);
-	    motorSpeed[1] = RobotUtil.range(power + (navX.getAngle() - degrees)/100, -1, 1);
-	    
-	    motorSpeed[0] = RobotUtil.floor(motorSpeed[0], 2);
-	    motorSpeed[1] = RobotUtil.floor(motorSpeed[1], 2);
-	    
-	    return motorSpeed;
+		return RobotUtil.moveToTarget(power, navX.getAngle(), degrees);
 	}
 	
 	public double getRobotAngle() {

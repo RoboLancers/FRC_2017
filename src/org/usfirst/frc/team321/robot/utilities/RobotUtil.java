@@ -32,43 +32,20 @@ public class RobotUtil {
 		}
 	}
 	
-	public static double[] arcadeDrive(double moveValue, double rotateValue, boolean squaredInputs) {
-	    double leftMotorSpeed = 0;
-	    double rightMotorSpeed = 0;
-	
-	    if (squaredInputs) {
-	        if (rotateValue >= 0.0) {
-	            rotateValue = (rotateValue * rotateValue);
-	        } else {
-	            rotateValue = -(rotateValue * rotateValue);
-	        }
-	        if (moveValue >= 0.0) {
-	            moveValue = (moveValue * moveValue);
-	        } else {
-	            moveValue = -(moveValue * moveValue);
-	        }
-	    }
-	
-	    if (rotateValue > 0.0) {
-	        if (moveValue > 0.0) {
-	            leftMotorSpeed = rotateValue - moveValue;
-	            rightMotorSpeed = Math.max(rotateValue, moveValue);
-	        } else {
-	            leftMotorSpeed = Math.max(rotateValue, -moveValue);
-	            rightMotorSpeed = rotateValue + moveValue;
-	        }
-	    } else {
-	        if (moveValue > 0.0) {
-	            leftMotorSpeed = -Math.max(-rotateValue, moveValue);
-	            rightMotorSpeed = rotateValue + moveValue;
-	        } else {
-	            leftMotorSpeed = rotateValue - moveValue;
-	            rightMotorSpeed = -Math.max(-rotateValue, -moveValue);
-	        }
-	    }
+	/**
+	 * Calculates the robot's motor speed to move to a target/angle
+	 * 
+	 * Note: Set power to 0 to move in place
+	 */
+	public static double[] moveToTarget(double power, double currentAngle, double targetAngle) {
+		double[] motorSpeed = new double[2];
+		
+		motorSpeed[0] = RobotUtil.range(power - (currentAngle - targetAngle)/100, -1, 1);
+	    motorSpeed[1] = RobotUtil.range(power + (currentAngle - targetAngle)/100, -1, 1);
 	    
-	    double[] values = {-leftMotorSpeed, -rightMotorSpeed};
+	    motorSpeed[0] = RobotUtil.floor(motorSpeed[0], 2);
+	    motorSpeed[1] = RobotUtil.floor(motorSpeed[1], 2);
 	    
-	    return values;
+	    return motorSpeed;
 	}
 }

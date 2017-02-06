@@ -9,13 +9,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Pneumatics extends Subsystem {
 	
-	public DoubleSolenoid leftClimberToggle, rightClimberToggle;
 	public Compressor compressor;
 	
 	public Pneumatics(){
-		leftClimberToggle = new DoubleSolenoid(4,5);
-		rightClimberToggle = new DoubleSolenoid(6,7);
-
 		compressor = new Compressor(RobotMap.COMPRESSOR);
 	}
 
@@ -23,8 +19,6 @@ public class Pneumatics extends Subsystem {
 	protected void initDefaultCommand() {
 		setDefaultCommand(new RegulateCompressor());
 	}
-	
-	
 	
 	public void regulateCompressor(){
     	if(!compressor.getPressureSwitchValue() && !compressor.enabled()

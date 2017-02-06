@@ -2,6 +2,7 @@ package org.usfirst.frc.team321.robot.commands;
 
 import org.usfirst.frc.team321.robot.Robot;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
+import org.usfirst.frc.team321.robot.subsystems.Conveyor.IntakeValues;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -12,27 +13,35 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class BallShoot extends Command{
 
-	public Shooter shootMotor;
-	public static boolean hasFinished = true;
+	boolean hasFinished = false;
 	
 	public BallShoot(){
 		requires(Robot.shooter);
-//		this.shootMotor = shootMotor;
 	}
 	
 	protected void initialize(){
+		hasFinished = false;
 	}
 	
-	protected void execute(double power){
+	protected void execute(){
 		//OpenCV Code for Distances and Angles
-		//shootMotor.setVelocity(xdist, ydist, angle);
+		//shootMotor.setVelocity(xdist, angle);
 		//shootMotor.clampVelocity(power);
+		Robot.shooter.clampVelocity(0.8);
+		
+		hasFinished = true;
 	}
 	
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return hasFinished;
 	}
 
+	protected void end(){
+		hasFinished = true;
+	}
+	
+    protected void interrupted() {
+    	hasFinished = true;
+    }
 }

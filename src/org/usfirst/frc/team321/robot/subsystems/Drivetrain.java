@@ -19,7 +19,7 @@ public class Drivetrain extends Subsystem {
 	public Encoder rightEncoder; 
 	public CANTalon leftFront, leftBack, rightFront, rightBack;
 	
-    public final double wheelDiameter = 0.19939;
+    public final double wheelDiameter = 1.2192;
     /**
      * Circumference of the wheel in meter
      */
@@ -36,7 +36,7 @@ public class Drivetrain extends Subsystem {
      * pulses per revolution.
      */
     // private static final double pulsePerRev1 = 256, pulsePerRev2 = 128,
-// pulsePerRev3 = 64;
+    // pulsePerRev3 = 64;
 	
 	public Drivetrain () {
 		
@@ -179,21 +179,3 @@ public class Drivetrain extends Subsystem {
     	return rightEncoder.getDistance();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

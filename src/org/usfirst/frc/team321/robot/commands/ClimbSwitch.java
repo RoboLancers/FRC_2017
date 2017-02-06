@@ -1,32 +1,30 @@
 package org.usfirst.frc.team321.robot.commands;
 
 import org.usfirst.frc.team321.robot.Robot;
-import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ClimbSwitch extends Command{
 
-	private boolean hasFinished = false;
-	private Pneumatics pneumatics;
+	private boolean hasFinished = true;
 	
 	public ClimbSwitch(){
-		requires(Robot.pneumatics);
-		this.pneumatics = Robot.pneumatics;
+		requires(Robot.climber);
 	}
 	
 	protected void initialize(){
+		hasFinished = false;
 	}
 	
     protected void execute() {
-    	if(pneumatics.leftClimberToggle.get() == DoubleSolenoid.Value.kForward && 
-    			pneumatics.rightClimberToggle.get() == DoubleSolenoid.Value.kForward){
-    		pneumatics.leftClimberToggle.set(DoubleSolenoid.Value.kReverse);
-    		pneumatics.rightClimberToggle.set(DoubleSolenoid.Value.kReverse);
+    	if(Robot.climber.leftClimberToggle.get() == DoubleSolenoid.Value.kForward && 
+    			Robot.climber.rightClimberToggle.get() == DoubleSolenoid.Value.kForward){
+    		Robot.climber.leftClimberToggle.set(DoubleSolenoid.Value.kReverse);
+    		Robot.climber.rightClimberToggle.set(DoubleSolenoid.Value.kReverse);
     	}else{
-    		pneumatics.leftClimberToggle.set(DoubleSolenoid.Value.kForward);
-    		pneumatics.rightClimberToggle.set(DoubleSolenoid.Value.kForward);
+    		Robot.climber.leftClimberToggle.set(DoubleSolenoid.Value.kForward);
+    		Robot.climber.rightClimberToggle.set(DoubleSolenoid.Value.kForward);
     	}
     	
     	hasFinished = true;
@@ -34,8 +32,7 @@ public class ClimbSwitch extends Command{
 	
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return hasFinished;
 	}
 	
 	protected void end(){

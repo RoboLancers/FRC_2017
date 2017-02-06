@@ -1,10 +1,14 @@
 
 package org.usfirst.frc.team321.robot;
 
+import org.usfirst.frc.team321.autonomous.AutoTurnTowardsTarget;
+import org.usfirst.frc.team321.autonomous.AutoMoveWithEncoder;
+import org.usfirst.frc.team321.autonomous.AutoStandStill;
 import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
+import org.usfirst.frc.team321.robot.subsystems.Conveyor;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team321.robot.subsystems.Intake;
+import org.usfirst.frc.team321.robot.subsystems.GearDoor;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
@@ -28,12 +32,14 @@ public class Robot extends IterativeRobot {
 
 	public static Pneumatics pneumatics;
 	public static Drivetrain drivetrain;
-	public static OI oi;
 	public static Climber climber;
 	public static Shooter shooter;
-	public static Intake intake;
+	public static Conveyor conveyor;
+	public static GearDoor geardoor;
 	public static Sensors sensors;
 	public static Camera camera;
+
+	public static OI oi;
 	
 	public static NetworkTable networkTable;
 	public static double angleOffset;
@@ -51,7 +57,8 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		shooter = new Shooter();
 		climber = new Climber();
-		intake = new Intake();
+		conveyor = new Conveyor();
+		geardoor = new GearDoor();
 		sensors = new Sensors();
 		camera = new Camera();
 		oi = new OI();
@@ -60,14 +67,49 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putData("Auto mode", chooser);
 		
-		//chooser.addDefault("No Autonomous Code", null);
-		//chooser.addObject("Move Straight Forward", new MoveStraightWithEncoder());
+		chooser.addDefault("Stand Still", new AutoStandStill());
+		chooser.addObject("Move Straight Forward", new AutoMoveWithEncoder());
+		chooser.addObject("Turn to Target", new AutoTurnTowardsTarget());
 		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putString("Angle to Gear", "Not Detected");
 		networkTable.putString("Angle to Boiler", "Not Detected");
 	}
 
+	/**
+	 * Programmer created method that displays robot data
+	 */
+	public void displayRobotData() {
+		if(camera.gearTargetDetected()){
+			SmartDashboard.putString("Angle to Gear", networkTable.getString("Angle to Gear", "Not Detected"));
+		}
+		
+		if(camera.boilerTargetDetected()){
+			SmartDashboard.putString("Angle to Boiler", networkTable.getString("Angle to Boiler", "Not Detected"));
+		}
+		
+		SmartDashboard.putNumber("Left Motor Speed", sensors.moveInHeading(0, 90)[0]);
+		SmartDashboard.putNumber("Right Motor Speed", sensors.moveInHeading(0, 90)[1]);
+		SmartDashboard.putNumber("Angle", sensors.getRobotAngle());
+		SmartDashboard.putNumber("Heading", sensors.getRobotHeading());
+		SmartDashboard.putNumber("Robot Velocity", sensors.getRobotVelocity());
+		SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
+		
+		SmartDashboard.putData("Shooter Running", shooter);
+		SmartDashboard.putData("Climb Switch Running", climber);
+		SmartDashboard.putData("Conveyor Running", conveyor);
+		SmartDashboard.putData("Drive Train Running", drivetrain);
+		SmartDashboard.putData("Pneumatics Running", pneumatics);
+		SmartDashboard.putData("Gear Door Running", geardoor);
+	}
+	
+	public void putRobotLabels() {
+		SmartDashboard.putString("Auto Command", autonomousCommand.toString());
+		SmartDashboard.putString("LeftMotorSpeed", "Left Motor Speed");
+		SmartDashboard.putString("RightMotorSpeed", "Right Motor Speed");
+		SmartDashboard.putString("RobotHeading", "Robot Heading");
+	}
+	
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
 	 * You can use it to reset any subsystem information you want to clear when
@@ -119,6 +161,9 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 			//angleOffset = networkTable.getNumber("angletogoal", 0);
 			//SmartDashboard.putNumber("Angle to target", angleOffset);
+		displayRobotData();
+		putRobotLabels();
+		
 		Scheduler.getInstance().run();
 	}
 
@@ -130,6 +175,8 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		sensors.resetNavX();
 		
+		autonomousCommand = (Command) chooser.getSelected();
+		
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}
@@ -140,25 +187,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		if(camera.gearTargetDetected()){
-			SmartDashboard.putString("Angle to Gear", networkTable.getString("Angle to Gear", "Not Detected"));
-		}
+		displayRobotData();
+		putRobotLabels();
 		
-		if(camera.boilerTargetDetected()){
-			SmartDashboard.putString("Angle to Boiler", networkTable.getString("Angle to Boiler", "Not Detected"));
-		}
-		
-		SmartDashboard.putNumber("Left Motor Speed", sensors.moveInHeading(0, 90)[0]);
-		SmartDashboard.putNumber("Right Motor Speed", sensors.moveInHeading(0, 90)[1]);
-		SmartDashboard.putNumber("Angle", sensors.navX.getAngle());
-
 		Scheduler.getInstance().run();
 	}
 
-	/**10.7
-	 * 25.5
-	 * 
-	 * 
+	/**
 	 * This function is called periodically during test mode
 	 */
 	@Override
