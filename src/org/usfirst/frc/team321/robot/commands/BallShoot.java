@@ -25,8 +25,6 @@ public class BallShoot extends Command{
 	
 	protected void execute(){
 		//OpenCV Code for Distances and Angles
-		//shootMotor.setVelocity(xdist, angle);
-		//shootMotor.clampVelocity(power);
 		Robot.shooter.clampVelocity(0.8);
 		
 		hasFinished = true;

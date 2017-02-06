@@ -1,7 +1,8 @@
 package org.usfirst.frc.team321.robot.subsystems;
 
-import org.usfirst.frc.team321.robot.RobotMap;
 import org.usfirst.frc.team321.robot.commands.BallShoot;
+
+import org.usfirst.frc.team321.robot.RobotMap;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import com.ctre.CANTalon;
@@ -39,8 +40,7 @@ public class Shooter extends Subsystem {
 	public double setVelocity(double dist, double angle){
 		angle = Math.toRadians(angle);
 		double xdist = dist * Math.cos(angle);
-		double ydist = dist * Math.sin(angle);
-		return Math.sqrt((gravity * (xdist * xdist))/(2.0 * Math.cos(angle) * Math.cos(angle) * (ydist - Math.tan(angle) * xdist)));
+		return Math.sqrt((gravity * (xdist * xdist))/(2.0 * Math.cos(angle) * Math.cos(angle) * (boilHeight - Math.tan(angle) * xdist)));
 	}
 	
 	public void clampVelocity(double power){
