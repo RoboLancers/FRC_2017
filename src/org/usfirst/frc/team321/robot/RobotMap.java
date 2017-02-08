@@ -34,4 +34,5 @@ public class RobotMap {
 	
 	public static final int COMPRESSOR = 0;
 	
+	public static final int BUMPER_TOUCH = 1;
 }

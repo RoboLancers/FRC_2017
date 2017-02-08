@@ -1,14 +1,15 @@
 
 package org.usfirst.frc.team321.robot;
 
-import org.usfirst.frc.team321.autonomous.AutoTurnTowardsTarget;
 import org.usfirst.frc.team321.autonomous.AutoMoveWithEncoder;
 import org.usfirst.frc.team321.autonomous.AutoStandStill;
+import org.usfirst.frc.team321.autonomous.AutoTurnTowardsTarget;
 import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Conveyor;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team321.robot.subsystems.GearDoor;
+import org.usfirst.frc.team321.robot.subsystems.IntakeSwitch;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Conveyor conveyor;
 	public static GearDoor geardoor;
+	public static IntakeSwitch intakeswitch;
 	public static Sensors sensors;
 	public static Camera camera;
 
@@ -59,8 +61,10 @@ public class Robot extends IterativeRobot {
 		climber = new Climber();
 		conveyor = new Conveyor();
 		geardoor = new GearDoor();
+		intakeswitch = new IntakeSwitch();
 		sensors = new Sensors();
 		camera = new Camera();
+		
 		oi = new OI();
 		
 		chooser = new SendableChooser();
