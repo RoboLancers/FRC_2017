@@ -2,10 +2,12 @@ package org.usfirst.frc.team321.robot.subsystems;
 
 import java.util.Arrays;
 
+import org.usfirst.frc.team321.robot.RobotMap;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -13,6 +15,7 @@ public class Sensors extends Subsystem {
 
 	public AHRS navX;
 	public SerialPort ultrasonic;
+	public DigitalInput touch;
 	
 	private String[] ultrasonicBuffer = new String[20];
 	private double[] ultrasonicMedian = new double[5];
@@ -20,6 +23,7 @@ public class Sensors extends Subsystem {
 	public Sensors() {
 		navX = new AHRS(SerialPort.Port.kMXP);
 		ultrasonic = new SerialPort(9600, SerialPort.Port.kOnboard, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
+		touch = new DigitalInput(RobotMap.BUMPER_TOUCH);
 		
 		navX.reset();
 		navX.resetDisplacement();
@@ -31,6 +35,10 @@ public class Sensors extends Subsystem {
 		for(int x = 0; x < ultrasonicMedian.length - 1; x++) {
 			ultrasonicMedian[x] = 0;
 		}
+	}
+	
+	public boolean hasTouched(){
+		return touch.get(); 
 	}
 	
 	public String getRawUltrasonicReading() {
