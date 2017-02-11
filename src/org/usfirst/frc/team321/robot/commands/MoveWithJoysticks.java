@@ -1,23 +1,22 @@
 package org.usfirst.frc.team321.robot.commands;
 
 import org.usfirst.frc.team321.robot.Robot;
-import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
+import static org.usfirst.frc.team321.robot.Robot.drivetrain;
 import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveWithJoysticks extends Command{
 	
-	private Drivetrain drivetrain;
+	private boolean hasFinished = false;
 	
 	public MoveWithJoysticks(){
 		requires(Robot.drivetrain);
-		this.drivetrain = Robot.drivetrain;
-		
+		hasFinished = false;
 	}
 	
 	protected void initialize(){
-		
+		hasFinished = false;
 	}
 	
 	protected void execute(){
@@ -27,7 +26,18 @@ public class MoveWithJoysticks extends Command{
 
 	@Override
 	protected boolean isFinished() {
-
-		return false;
+		return hasFinished;
 	}
+
+	@Override
+	protected void end() {
+		hasFinished = true;
+	}
+
+	@Override
+	protected void interrupted() {
+		hasFinished = true;
+	}
+	
+	
 }

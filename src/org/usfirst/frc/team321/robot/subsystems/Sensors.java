@@ -15,7 +15,7 @@ public class Sensors extends Subsystem {
 
 	public AHRS navX;
 	public SerialPort ultrasonic;
-	public DigitalInput touch;
+	//public DigitalInput touch;
 	
 	private String[] ultrasonicBuffer = new String[20];
 	private double[] ultrasonicMedian = new double[5];
@@ -23,7 +23,7 @@ public class Sensors extends Subsystem {
 	public Sensors() {
 		navX = new AHRS(SerialPort.Port.kMXP);
 		ultrasonic = new SerialPort(9600, SerialPort.Port.kOnboard, 8, SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
-		touch = new DigitalInput(RobotMap.BUMPER_TOUCH);
+		//touch = new DigitalInput(RobotMap.BUMPER_TOUCH);
 		
 		navX.reset();
 		navX.resetDisplacement();
@@ -37,9 +37,9 @@ public class Sensors extends Subsystem {
 		}
 	}
 	
-	public boolean hasTouched(){
-		return touch.get(); 
-	}
+	//public boolean hasTouched(){
+	//	return touch.get(); 
+	//}
 	
 	public String getRawUltrasonicReading() {
 		ultrasonicBuffer[ultrasonicBuffer.length - 1] = ultrasonic.readString();

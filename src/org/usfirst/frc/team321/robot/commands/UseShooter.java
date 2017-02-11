@@ -1,8 +1,6 @@
 package org.usfirst.frc.team321.robot.commands;
 
 import org.usfirst.frc.team321.robot.Robot;
-import org.usfirst.frc.team321.robot.subsystems.Shooter;
-import org.usfirst.frc.team321.robot.subsystems.Conveyor.IntakeValues;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,35 +9,47 @@ import edu.wpi.first.wpilibj.command.Command;
  *from the boiler. They gain this information through OpenCV code, using the robot's camera
  *in the process 
  */
-public class BallShoot extends Command{
+public class UseShooter extends Command {
 
-	boolean hasFinished = false;
+	private boolean hasFinished;
+	private double shooterVal;
 	
-	public BallShoot(){
+	/*
+	 * Default
+	 */
+	public UseShooter(){
 		requires(Robot.shooter);
+		hasFinished = false;
+		shooterVal = 0.75;
 	}
+	
+	public UseShooter(double val){
+		requires(Robot.shooter);
+		hasFinished = false;
+		shooterVal = val;
+	}
+	
 	
 	protected void initialize(){
 		hasFinished = false;
 	}
 	
 	protected void execute(){
-		//OpenCV Code for Distances and Angles
-		Robot.shooter.clampVelocity(0.8);
-		
-		hasFinished = true;
-	}
-	
-	@Override
-	protected boolean isFinished() {
-		return hasFinished;
+		Robot.shooter.setShooter(shooterVal);
 	}
 
 	protected void end(){
+		Robot.shooter.setShooter(0);
 		hasFinished = true;
 	}
 	
     protected void interrupted() {
+		Robot.shooter.setShooter(0);
     	hasFinished = true;
     }
+    
+	@Override
+	protected boolean isFinished() {
+		return hasFinished;
+	}
 }

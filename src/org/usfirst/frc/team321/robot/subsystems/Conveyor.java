@@ -16,19 +16,7 @@ public class Conveyor extends Subsystem{
 		intakeMotor = new CANTalon(RobotMap.CONVEYOR_MOTOR);
 	}
 	
-	public enum IntakeValues{
-		INTAKE(1.0), STOP(0.0), OUTTAKE(-1.0);
-		
-		private double value;
-		
-		private IntakeValues(double value){
-			this.value = value;
-		}
-		
-		public double getValue(){
-			return value;
-		}
-	}
+
 	@Override
 	protected void initDefaultCommand() {
 	}

@@ -1,20 +1,20 @@
 package org.usfirst.frc.team321.robot.subsystems;
 
-import org.usfirst.frc.team321.robot.commands.ClimbSwitch;
+import org.usfirst.frc.team321.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Climber extends Subsystem {
 	
-	public DoubleSolenoid leftClimberToggle, rightClimberToggle;
+	public static DoubleSolenoid climberToggle;
 	
 	public Climber(){
-		leftClimberToggle = new DoubleSolenoid(4,5);
-		rightClimberToggle = new DoubleSolenoid(6,7);
+		climberToggle = new DoubleSolenoid(RobotMap.CLIMBER_FORWARD,RobotMap.CLIMBER_REVERSE);
+		climberToggle.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	public void initDefaultCommand(){
+		
 	}
-	
 }

@@ -4,29 +4,33 @@ import org.usfirst.frc.team321.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class RegulateCompressor extends Command{
+public class RegulateCompressor extends Command {
 
-	public RegulateCompressor(){
+	private boolean hasFinished;
+
+	public RegulateCompressor() {
 		requires(Robot.pneumatics);
+		hasFinished = false;
 	}
-	
-	protected void initialize(){	
+
+	protected void initialize() {
+		hasFinished = false;
 	}
-	
-	protected void execute(){
+
+	protected void execute() {
 		Robot.pneumatics.regulateCompressor();
 	}
-	
-	
+
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return hasFinished;
 	}
-	
-	protected void end(){
+
+	protected void end() {
+		hasFinished = true;
 	}
-	
-	protected void interrupted(){
+
+	protected void interrupted() {
+		hasFinished = true;
 	}
 }

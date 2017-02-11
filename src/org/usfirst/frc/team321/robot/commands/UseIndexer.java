@@ -4,21 +4,13 @@ import org.usfirst.frc.team321.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ConveyBall extends Command {
+public class UseIndexer extends Command {
 
-	private boolean hasFinished;
-	private double conveyVal;
+private boolean hasFinished;
 	
-	public ConveyBall(){
-		requires(Robot.conveyor);
+	public UseIndexer(){
+		requires(Robot.indexer);
 		hasFinished = false;
-		conveyVal = 1;
-	}
-	
-	public ConveyBall(double val){
-		requires(Robot.conveyor);
-		hasFinished = false;
-		conveyVal = val;
 	}
 	
 	protected void initialize(){
@@ -26,22 +18,21 @@ public class ConveyBall extends Command {
 	}
 	
 	protected void execute(){
-		Robot.conveyor.intakeMotor.set(-conveyVal);
+		Robot.indexer.setIndexer(-1);
 	}
-	
+
 	protected void end(){
-		Robot.conveyor.intakeMotor.set(0);
+		Robot.indexer.setIndexer(0);
 		hasFinished = true;
 	}
 	
     protected void interrupted() {
-		Robot.conveyor.intakeMotor.set(0);
+		Robot.indexer.setIndexer(0);
     	hasFinished = true;
     }
-	
+    
 	@Override
 	protected boolean isFinished() {
 		return hasFinished;
 	}
-
 }

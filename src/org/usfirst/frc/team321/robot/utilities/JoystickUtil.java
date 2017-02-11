@@ -78,4 +78,12 @@ public class JoystickUtil {
 	public static double getRightTriggerNormalized(){
 		return RobotUtil.squareAndKeepSign(getRightTrigger());
 	}
+	
+	public static double getThrustAxis() {
+		if (Math.abs(OI.maniStick.getRawAxis(3)) > tolerance) {
+			return OI.maniStick.getRawAxis(3);
+		} else {
+			return 0;
+		}
+	}
 }

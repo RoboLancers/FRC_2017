@@ -1,19 +1,20 @@
 package org.usfirst.frc.team321.robot.subsystems;
 
+import org.usfirst.frc.team321.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class IntakeSwitch extends Subsystem {
 	
-	public DoubleSolenoid leftIntakeSwitch, rightIntakeSwitch;
+	public static DoubleSolenoid intakeSwitch;
 	
 	public IntakeSwitch(){
-		leftIntakeSwitch = new DoubleSolenoid(8,9);
-		rightIntakeSwitch = new DoubleSolenoid(0,1);
+		intakeSwitch = new DoubleSolenoid(RobotMap.INTAKE_FORWARD,RobotMap.INTAKE_REVERSE);
 	}
 	
+	@Override
 	public void initDefaultCommand() {
-		
 		
 	}
 }

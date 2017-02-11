@@ -9,6 +9,8 @@ import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Conveyor;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team321.robot.subsystems.GearDoor;
+import org.usfirst.frc.team321.robot.subsystems.GearShifter;
+import org.usfirst.frc.team321.robot.subsystems.Indexer;
 import org.usfirst.frc.team321.robot.subsystems.IntakeSwitch;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Sensors;
@@ -31,13 +33,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static Pneumatics pneumatics;
 	public static Drivetrain drivetrain;
 	public static Climber climber;
 	public static Shooter shooter;
 	public static Conveyor conveyor;
+	public static Indexer indexer;
+	
+	public static Pneumatics pneumatics;
 	public static GearDoor geardoor;
 	public static IntakeSwitch intakeswitch;
+	public static GearShifter gearshift;
+	
 	public static Sensors sensors;
 	public static Camera camera;
 
@@ -46,8 +52,8 @@ public class Robot extends IterativeRobot {
 	public static NetworkTable networkTable;
 	public static double angleOffset;
 	
-	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser();
+	Command autonomousCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -59,9 +65,11 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain();
 		shooter = new Shooter();
 		climber = new Climber();
+		indexer = new Indexer();
 		conveyor = new Conveyor();
 		geardoor = new GearDoor();
 		intakeswitch = new IntakeSwitch();
+		gearshift = new GearShifter();
 		sensors = new Sensors();
 		camera = new Camera();
 		
@@ -163,8 +171,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-			//angleOffset = networkTable.getNumber("angletogoal", 0);
-			//SmartDashboard.putNumber("Angle to target", angleOffset);
 		displayRobotData();
 		putRobotLabels();
 		
