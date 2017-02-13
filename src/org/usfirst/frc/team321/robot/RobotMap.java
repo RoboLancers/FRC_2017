@@ -31,7 +31,7 @@ public class RobotMap {
 	
 	public static final int SHOOT_ENCODER_A = 6;
 	public static final int SHOOT_ENCODER_B = 7;
-	
+
 	public static final int COMPRESSOR = 0;
 	
 	public static final int GEARDOOR_FORWARD = 3;

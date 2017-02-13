@@ -27,7 +27,7 @@ public class Camera extends Subsystem {
 	
 	public boolean gearTargetDetected(){
 		try{
-			Double.parseDouble(Robot.networkTable.getString("angletogeartarget", "Not Detected"));
+			Double.parseDouble(Robot.networkTable.getString("Angle To Gear", "Not Detected"));
 		}catch(NumberFormatException num){
 			return false;
 		}
@@ -35,12 +35,12 @@ public class Camera extends Subsystem {
 	}
 	
 	public double gearTargetAngle(){
-		return Double.parseDouble(Robot.networkTable.getString("angletogeartarget", "Not Detected"));
+		return Double.parseDouble(Robot.networkTable.getString("Angle To Gear", "Not Detected"));
 	}
 	
 	public boolean boilerTargetDetected(){
 		try{
-			Double.parseDouble(Robot.networkTable.getString("angletoboilertarget", "Not Detected"));
+			Double.parseDouble(Robot.networkTable.getString("Angle To Boiler", "Not Detected"));
 		}catch(NumberFormatException num){
 			return false;
 		}
@@ -48,7 +48,7 @@ public class Camera extends Subsystem {
 	}
 	
 	public double boilerTargetAngle(){
-		return Double.parseDouble(Robot.networkTable.getString("angletoboilertarget", "Not Detected")); 
+		return Double.parseDouble(Robot.networkTable.getString("Angle To Boiler", "Not Detected")); 
 	}
 	
 	protected void initDefaultCommand() {

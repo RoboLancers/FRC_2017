@@ -4,18 +4,18 @@ import org.usfirst.frc.team321.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ConveyBall extends Command {
+public class UseConveyor extends Command {
 
 	private boolean hasFinished;
 	private double conveyVal;
 	
-	public ConveyBall(){
+	public UseConveyor(){
 		requires(Robot.conveyor);
 		hasFinished = false;
 		conveyVal = 1;
 	}
 	
-	public ConveyBall(double val){
+	public UseConveyor(double val){
 		requires(Robot.conveyor);
 		hasFinished = false;
 		conveyVal = val;

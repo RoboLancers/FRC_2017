@@ -1,7 +1,7 @@
-package org.usfirst.frc.team321.autonomous;
+package org.usfirst.frc.team321.robot.autonomous;
 
 import org.usfirst.frc.team321.robot.Robot;
-import org.usfirst.frc.team321.robot.utilities.PIDConstant;
+import org.usfirst.frc.team321.robot.utilities.Constants;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -42,8 +42,8 @@ public class MoveStraightEncoder extends Command {
     protected void execute() {
 
 		double error = Robot.drivetrain.getLeftSpeedInRPM() - Robot.drivetrain.getRightSpeedInRPM();
-		rightPower += PIDConstant.kP * error;
-		rightPower += PIDConstant.kD * lastError;
+		rightPower += Constants.kP * error;
+		rightPower += Constants.kD * lastError;
 	
 		lastError = error;
 	

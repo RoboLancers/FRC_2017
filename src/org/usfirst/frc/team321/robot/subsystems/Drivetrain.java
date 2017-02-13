@@ -1,7 +1,7 @@
 package org.usfirst.frc.team321.robot.subsystems;
 
 import org.usfirst.frc.team321.robot.RobotMap;
-import org.usfirst.frc.team321.robot.commands.MoveWithJoysticks;
+import org.usfirst.frc.team321.robot.commands.UseDriveTrain;
 
 import com.ctre.CANTalon;
 
@@ -18,6 +18,8 @@ public class Drivetrain extends Subsystem {
 	public Encoder leftEncoder;
 	public Encoder rightEncoder; 
 	public CANTalon leftFront, leftBack, rightFront, rightBack;
+	public boolean isModeDriving;
+	public static DriveMode driveMode;
 	
     public final double wheelDiameter = 1.2192;
     /**
@@ -35,11 +37,8 @@ public class Drivetrain extends Subsystem {
      * gear ratio is also used for the distance the robot has traveled with the
      * pulses per revolution.
      */
-    // private static final double pulsePerRev1 = 256, pulsePerRev2 = 128,
-    // pulsePerRev3 = 64;
 	
 	public Drivetrain () {
-		
 		super("Drive Train");
 		
 		leftFront = new CANTalon(RobotMap.LEFT_FRONT_MOTOR);
@@ -51,50 +50,39 @@ public class Drivetrain extends Subsystem {
 		leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_A, RobotMap.LEFT_ENCODER_B);
 		rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_A, RobotMap.RIGHT_ENCODER_B);
 		
-		
 		rightEncoder.reset();
 		leftEncoder.reset();
 		
+		isModeDriving = true;
 	}
 	
-
 	public void initDefaultCommand() {
-	
-		// Set the default command for a subsystem here.
-		setDefaultCommand(new MoveWithJoysticks());
+		setDefaultCommand(new UseDriveTrain());
 	}
+	
+	public static enum DriveMode {
+		DRIVING, AUTO_ADJUST, CLIMBING, FEEDING;
+	} 
 	
 	public void setLeftPowers(double power){
-		
-		//Easily control the power of robot by mutiplying it by a value.
-		//Extra seive just in case the flour still has lumps. Makes flour FLUFFY!
-		
 		power = power * 1.0;
 		
 		if(Math.abs(power)<=1){
-			
 			leftFront.set(power);
 			leftBack.set(power);
-			
-		}else{
-			
+		}else{	
 			leftFront.set(power/power);
 			leftBack.set(power/power);
 		}
-		
 	}
 	
 	public void setRightPowers(double power){
-		
 		power = power * 1.0;
 		
 		if(Math.abs(power)<=1){
-			
 			rightFront.set(power);
 			rightBack.set(power);
-			
-		}else{
-			
+		}else{		
 			rightFront.set(power/power);
 			rightBack.set(power/power);
 		}
@@ -124,8 +112,6 @@ public class Drivetrain extends Subsystem {
      * @return Returns the encoder movement in degrees
      */
     public double distanceToEncDegrees(double distanceInMeters) {
-		// For future references
-		// return ((distanceInMeters) * 360) / (wheelCircumference);
 		return (360 / wheelCircumference) * distanceInMeters;
     }
 
@@ -138,8 +124,6 @@ public class Drivetrain extends Subsystem {
      * @return
      */
     public double encDistanceToDistance(double encRotation) {
-		// For future references
-		// return (((encRotation / 360) * wheelCircumference));
 		return ((encRotation / 360) * wheelCircumference) / 100;
     }
 

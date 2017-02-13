@@ -1,21 +1,24 @@
 
 package org.usfirst.frc.team321.robot;
 
-import org.usfirst.frc.team321.autonomous.AutoMoveWithEncoder;
-import org.usfirst.frc.team321.autonomous.AutoStandStill;
-import org.usfirst.frc.team321.autonomous.AutoTurnTowardsTarget;
+import org.usfirst.frc.team321.robot.autonomous.AutoMoveWithEncoder;
+import org.usfirst.frc.team321.robot.autonomous.AutoStandStill;
+import org.usfirst.frc.team321.robot.autonomous.AutoTurnTowardsTarget;
+import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
 import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Conveyor;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team321.robot.subsystems.GearDoor;
+import org.usfirst.frc.team321.robot.subsystems.GearHolder;
 import org.usfirst.frc.team321.robot.subsystems.GearShifter;
 import org.usfirst.frc.team321.robot.subsystems.Indexer;
-import org.usfirst.frc.team321.robot.subsystems.IntakeSwitch;
+import org.usfirst.frc.team321.robot.subsystems.IntakeFlap;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
+import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -40,9 +43,9 @@ public class Robot extends IterativeRobot {
 	public static Indexer indexer;
 	
 	public static Pneumatics pneumatics;
-	public static GearDoor geardoor;
-	public static IntakeSwitch intakeswitch;
-	public static GearShifter gearshift;
+	public static GearHolder gearholder;
+	public static IntakeFlap intakeflap;
+	public static GearShifter gearshifter;
 	
 	public static Sensors sensors;
 	public static Camera camera;
@@ -67,9 +70,9 @@ public class Robot extends IterativeRobot {
 		climber = new Climber();
 		indexer = new Indexer();
 		conveyor = new Conveyor();
-		geardoor = new GearDoor();
-		intakeswitch = new IntakeSwitch();
-		gearshift = new GearShifter();
+		gearholder = new GearHolder();
+		intakeflap = new IntakeFlap();
+		gearshifter = new GearShifter();
 		sensors = new Sensors();
 		camera = new Camera();
 		
@@ -84,8 +87,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Turn to Target", new AutoTurnTowardsTarget());
 		
 		networkTable = NetworkTable.getTable("jetson");
-		networkTable.putString("Angle to Gear", "Not Detected");
-		networkTable.putString("Angle to Boiler", "Not Detected");
+		networkTable.putString("Angle To Gear", "Not Detected");
+		networkTable.putString("Angle To Boiler", "Not Detected");
 	}
 
 	/**
@@ -93,33 +96,38 @@ public class Robot extends IterativeRobot {
 	 */
 	public void displayRobotData() {
 		if(camera.gearTargetDetected()){
-			SmartDashboard.putString("Angle to Gear", networkTable.getString("Angle to Gear", "Not Detected"));
+			SmartDashboard.putString("Angle To Gear", networkTable.getString("Angle To Gear", "Not Detected"));
 		}
 		
 		if(camera.boilerTargetDetected()){
-			SmartDashboard.putString("Angle to Boiler", networkTable.getString("Angle to Boiler", "Not Detected"));
+			SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
 		}
 		
-		SmartDashboard.putNumber("Left Motor Speed", sensors.moveInHeading(0, 90)[0]);
-		SmartDashboard.putNumber("Right Motor Speed", sensors.moveInHeading(0, 90)[1]);
+		SmartDashboard.putNumber("Left Motor Speed", drivetrain.getLeftSpeedInRPM());
+		SmartDashboard.putNumber("Right Motor Speed", drivetrain.getRightSpeedInRPM());
 		SmartDashboard.putNumber("Angle", sensors.getRobotAngle());
 		SmartDashboard.putNumber("Heading", sensors.getRobotHeading());
 		SmartDashboard.putNumber("Robot Velocity", sensors.getRobotVelocity());
 		SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
+		
+		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
+		SmartDashboard.putString("Gear Shifer", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Fast" : "Slow" );
+		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
+		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Climber Engaged" : "Driving");
+		
+		SmartDashboard.putNumber("Left Joystick Value", JoystickUtil.getLeftYAxisValue());
+		
+		SmartDashboard.putNumber("Shooter m/s", shooter.shootEnc.getRate());
 		
 		SmartDashboard.putData("Shooter Running", shooter);
 		SmartDashboard.putData("Climb Switch Running", climber);
 		SmartDashboard.putData("Conveyor Running", conveyor);
 		SmartDashboard.putData("Drive Train Running", drivetrain);
 		SmartDashboard.putData("Pneumatics Running", pneumatics);
-		SmartDashboard.putData("Gear Door Running", geardoor);
-	}
-	
-	public void putRobotLabels() {
-		SmartDashboard.putString("Auto Command", autonomousCommand.toString());
-		SmartDashboard.putString("LeftMotorSpeed", "Left Motor Speed");
-		SmartDashboard.putString("RightMotorSpeed", "Right Motor Speed");
-		SmartDashboard.putString("RobotHeading", "Robot Heading");
+		SmartDashboard.putData("Gear Door Running", gearholder);
+		SmartDashboard.putData("Gear Shifter Running", gearshifter);
+		SmartDashboard.putData("Intake Flap Running", intakeflap);
+		SmartDashboard.putData("Indexer Running", indexer);
 	}
 	
 	/**
@@ -129,7 +137,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		new DSolenoidToggle(Robot.climber, Climber.climberToggle, DoubleSolenoid.Value.kReverse);
 	}
 
 	@Override
@@ -172,7 +180,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		displayRobotData();
-		putRobotLabels();
 		
 		Scheduler.getInstance().run();
 	}
@@ -198,7 +205,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		
 		displayRobotData();
-		putRobotLabels();
 		
 		Scheduler.getInstance().run();
 	}

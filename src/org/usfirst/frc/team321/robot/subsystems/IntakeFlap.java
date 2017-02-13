@@ -5,12 +5,13 @@ import org.usfirst.frc.team321.robot.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class IntakeSwitch extends Subsystem {
+public class IntakeFlap extends Subsystem {
 	
-	public static DoubleSolenoid intakeSwitch;
+	public static DoubleSolenoid intakeflap;
 	
-	public IntakeSwitch(){
-		intakeSwitch = new DoubleSolenoid(RobotMap.INTAKE_FORWARD,RobotMap.INTAKE_REVERSE);
+	public IntakeFlap(){
+		intakeflap = new DoubleSolenoid(RobotMap.INTAKE_FORWARD,RobotMap.INTAKE_REVERSE);
+		intakeflap.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	@Override

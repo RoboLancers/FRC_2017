@@ -14,6 +14,10 @@ public class Climber extends Subsystem {
 		climberToggle.set(DoubleSolenoid.Value.kReverse);
 	}
 	
+//	public boolean isClimbMode() {
+//		return climberToggle.get() == DoubleSolenoid.Value.kReverse ? false : true;
+//	}
+	
 	public void initDefaultCommand(){
 		
 	}

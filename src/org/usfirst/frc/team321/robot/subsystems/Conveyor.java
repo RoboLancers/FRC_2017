@@ -1,7 +1,7 @@
 package org.usfirst.frc.team321.robot.subsystems;
 
 import org.usfirst.frc.team321.robot.RobotMap;
-import org.usfirst.frc.team321.robot.commands.ConveyBall;
+import org.usfirst.frc.team321.robot.commands.UseConveyor;
 
 import com.ctre.CANTalon;
 
