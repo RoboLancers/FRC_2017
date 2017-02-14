@@ -1,21 +1,19 @@
-package org.usfirst.frc.team321.robot.autonomous;
+package org.usfirst.frc.team321.robot.autonomous.subroutines;
 
 import org.usfirst.frc.team321.robot.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveStraightTime extends Command {
 	
+	private Timer timer;
 	public double degrees;
 	public double power;
 	public double seconds;
 	public double startTime;
 	public boolean hasFinished = false;
 	
-	/**
-	 * Instructions to move robot straight forward with the navX sensor
-	 * Set power to 0 to turn in place.
-	 */
 	public MoveStraightTime(double power, double degrees, double seconds) {
 		requires(Robot.drivetrain);
 		requires(Robot.sensors);
@@ -23,25 +21,18 @@ public class MoveStraightTime extends Command {
 		this.degrees = degrees;
 		this.seconds = seconds;
     }
-	
-	public boolean timeEnded(){
-		if ((System.nanoTime() - startTime)/1000000000 < seconds) {
-			return false;
-		} else {
-			return true;
-		}
-	}
 
     protected void initialize() {
-    	startTime = System.nanoTime();
     	hasFinished = false;
+    	timer.reset();
+    	timer.start();
     }
 
     protected void execute() {
-    	if(!timeEnded()){
-    		Robot.drivetrain.setLeftPowers(Robot.sensors.moveInHeading(power, degrees)[0]);
-    		Robot.drivetrain.setRightPowers(Robot.sensors.moveInHeading(power, degrees)[1]);
-    	}else{
+    	Robot.drivetrain.setLeftPowers(Robot.sensors.moveInHeading(power, degrees)[0]);
+    	Robot.drivetrain.setRightPowers(Robot.sensors.moveInHeading(power, degrees)[1]);
+    	
+    	if(timer.get() > seconds) {
     		hasFinished = true;
     	}
     }
@@ -56,7 +47,7 @@ public class MoveStraightTime extends Command {
     }
 
 	protected boolean isFinished() {
-		return timeEnded();
+		return hasFinished;
 	}
 
 }
