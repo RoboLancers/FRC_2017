@@ -6,11 +6,17 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class UseIndexer extends Command {
 
-private boolean hasFinished;
-	
+	private boolean hasFinished;
+	private double power;
+
 	public UseIndexer(){
 		requires(Robot.indexer);
 		hasFinished = false;
+		power = 1;
+	}
+	
+	public UseIndexer(double power) {
+		this.power = power;
 	}
 	
 	protected void initialize(){
@@ -18,7 +24,7 @@ private boolean hasFinished;
 	}
 	
 	protected void execute(){
-		Robot.indexer.setIndexer(-1);
+		Robot.indexer.setIndexer(-power);
 	}
 
 	protected void end(){

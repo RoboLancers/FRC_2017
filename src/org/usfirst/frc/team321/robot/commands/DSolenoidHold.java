@@ -14,29 +14,15 @@ public class DSolenoidHold extends Command {
 	private boolean hasFinished = false;
 	Value value = null;
 
-	public DSolenoidHold(Subsystem sub, DoubleSolenoid ds) {
-		this(sub, ds, null);
-	}
-
-	public DSolenoidHold(Subsystem sub, DoubleSolenoid ds, Value value){
+	public DSolenoidHold(Subsystem sub, DoubleSolenoid ds, Value defaultValue){
 		requires(sub);
 		this.ds = ds;
-		this.value = value;
+		this.value = defaultValue;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if(value == null){
-			if(ds.get() == DoubleSolenoid.Value.kForward){
-				ds.set(DoubleSolenoid.Value.kReverse);
-			}
-
-			else if(ds.get() == DoubleSolenoid.Value.kReverse){
-				ds.set(DoubleSolenoid.Value.kForward);
-			}
-		}else{
-			ds.set(value);
-		}
+		ds.set(value == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward);
 		
 		hasFinished = false;
 	}
@@ -59,13 +45,7 @@ public class DSolenoidHold extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		if(ds.get() == DoubleSolenoid.Value.kForward){
-			ds.set(DoubleSolenoid.Value.kReverse);
-		}
-
-		else if(ds.get() == DoubleSolenoid.Value.kReverse){
-			ds.set(DoubleSolenoid.Value.kForward);
-		}
+		ds.set(value);
 		
 		hasFinished = true;
 	}

@@ -7,4 +7,9 @@ public class GroupConveyerIndexer extends CommandGroup {
 		addParallel(new UseConveyor());
 		addParallel(new UseIndexer());
 	}
+	
+	public GroupConveyerIndexer(double power) {
+		addParallel(new UseConveyor(power));
+		addParallel(new UseIndexer(power));
+	}
 }
