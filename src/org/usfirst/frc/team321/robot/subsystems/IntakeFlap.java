@@ -11,7 +11,15 @@ public class IntakeFlap extends Subsystem {
 	
 	public IntakeFlap(){
 		intakeflap = new DoubleSolenoid(RobotMap.INTAKE_FORWARD,RobotMap.INTAKE_REVERSE);
+		intakeflap.set(DoubleSolenoid.Value.kForward);
+	}
+	
+	public void setBallIntake() {
 		intakeflap.set(DoubleSolenoid.Value.kReverse);
+	}
+	
+	public void setGearIntake() {
+		intakeflap.set(DoubleSolenoid.Value.kForward);
 	}
 	
 	@Override

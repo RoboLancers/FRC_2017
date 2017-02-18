@@ -18,6 +18,7 @@ public class UseDriveTrain extends Command{
 	
 	public UseDriveTrain(){
 		requires(Robot.drivetrain);
+		Drivetrain.driveMode = DriveMode.DRIVING;
 		hasFinished = false;
 	}
 	
@@ -45,18 +46,17 @@ public class UseDriveTrain extends Command{
 			
 			case AUTO_ADJUST:
 				if (Robot.camera.gearTargetDetected()) {
-		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0.3, Robot.camera.gearTargetAngle(), 0)[0] / 3);
-		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0.3, Robot.camera.gearTargetAngle(), 0)[1] / 3);
+		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0.3, Robot.camera.gearTargetAngle(), 0)[0]);
+		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0.3, Robot.camera.gearTargetAngle(), 0)[1]);
+		    		if (Robot.sensors.isGearLoaded() && Robot.sensors.isGearPenetrated()) {
+		    			Robot.gearholder.openDoor();
+		    		}
 		    	} else if (Robot.camera.boilerTargetDetected()) {
-		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0.3, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
-		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0.3, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
+		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
+		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
 		    	} else {
 		    		Robot.drivetrain.setAllPowers(0);
 		    	}
-				break;
-				
-			case FEEDING:
-				
 				break;
 				
 			default:

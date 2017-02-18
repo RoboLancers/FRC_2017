@@ -21,7 +21,7 @@ public class JoystickUtil {
 	
 	public static double getRightYAxisValue(){
 		if(Math.abs(OI.driveStick.getRawAxis(3)) > tolerance){
-			return -OI.driveStick.getRawAxis(3);
+			return OI.driveStick.getRawAxis(3);
 		}else{
 			return 0;
 		}

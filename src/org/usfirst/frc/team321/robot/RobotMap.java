@@ -21,19 +21,11 @@ public class RobotMap {
 	public static final int SHOOT_MOTOR_A = 2;
 	public static final int SHOOT_MOTOR_B = 3;
 	public static final int INDEXER_MOTOR = 7;
-	
-	//Motor Encoders
-	public static final int LEFT_ENCODER_A = 1;
-	public static final int LEFT_ENCODER_B = 2;
-	
-	public static final int RIGHT_ENCODER_A = 3;
-	public static final int RIGHT_ENCODER_B = 4;
-	
-	public static final int SHOOT_ENCODER_A = 6;
-	public static final int SHOOT_ENCODER_B = 7;
 
+	//Compressor
 	public static final int COMPRESSOR = 0;
 	
+	//Pneumatics
 	public static final int GEARDOOR_FORWARD = 3;
 	public static final int GEARDOOR_REVERSE = 4;
 	public static final int INTAKE_FORWARD = 2;
@@ -43,5 +35,7 @@ public class RobotMap {
 	public static final int CLIMBER_FORWARD = 0;
 	public static final int CLIMBER_REVERSE = 7;
 	
-	public static final int BUMPER_TOUCH = 1;
+	//Digital Input Sensors
+	public static final int BUMPER_TOUCH = 0;
+	public static final int IR_SENSOR = 5;
 }

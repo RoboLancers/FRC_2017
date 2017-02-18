@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shooter extends Subsystem {
 
 	public CANTalon shootMotorLeft, shootMotorRight;
-	public Encoder shootEnc;
 	
 	public static final double boilHeight = 2.0938;
 	public static final double shooterAngle = 89.15;
@@ -21,10 +20,6 @@ public class Shooter extends Subsystem {
 	public Shooter() {
 		shootMotorLeft = new CANTalon(RobotMap.SHOOT_MOTOR_A);
 		shootMotorRight = new CANTalon(RobotMap.SHOOT_MOTOR_B);
-		
-		shootEnc = new Encoder(RobotMap.SHOOT_ENCODER_A, RobotMap.SHOOT_ENCODER_B);
-		shootEnc.reset();
-		shootEnc.setDistancePerPulse(4*0.0254*Math.PI/1024);
 		
 		shootMotorLeft.setVoltageRampRate(5);
 		shootMotorRight.setVoltageRampRate(5);
@@ -38,8 +33,8 @@ public class Shooter extends Subsystem {
 	//Imagine pandas eating cherry tomatoes
 	
 	public void setShooter(double power) {
-		shootMotorLeft.set(RobotUtil.range(-power, -1, 1));
-		shootMotorRight.set(RobotUtil.range(-power, -1, 1));
+		shootMotorLeft.set(RobotUtil.range(power, -1, 1));
+		shootMotorRight.set(RobotUtil.range(power, -1, 1));
 	}
 	
 	@Override

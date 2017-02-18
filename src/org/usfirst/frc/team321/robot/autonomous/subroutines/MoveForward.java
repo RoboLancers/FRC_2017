@@ -5,20 +5,16 @@ import org.usfirst.frc.team321.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveStraightTime extends Command {
-	
+public class MoveForward extends Command {
+
 	private Timer timer = new Timer();
-	public double degrees;
 	public double power;
 	public double seconds;
-	public double startTime;
 	public boolean hasFinished = false;
 	
-	public MoveStraightTime(double power, double degrees, double seconds) {
+	public MoveForward(double power, double seconds) {
 		requires(Robot.drivetrain);
-		requires(Robot.sensors);
 		this.power = power;
-		this.degrees = degrees;
 		this.seconds = seconds;
     }
 
@@ -29,12 +25,8 @@ public class MoveStraightTime extends Command {
     }
 
     protected void execute() {
-    	Robot.drivetrain.setLeftPowers(Robot.sensors.moveInHeading(power, degrees)[0]);
-    	Robot.drivetrain.setRightPowers(Robot.sensors.moveInHeading(power, degrees)[1]);
-    	
-    	if(timer.get() > seconds) {
-    		hasFinished = true;
-    	}
+    	Robot.drivetrain.setLeftPowers(power);
+    	Robot.drivetrain.setRightPowers(power);
     }
 
     protected void end() {
@@ -47,7 +39,7 @@ public class MoveStraightTime extends Command {
     }
 
 	protected boolean isFinished() {
-		return hasFinished;
+		return timer.get() > seconds;
 	}
 
 }

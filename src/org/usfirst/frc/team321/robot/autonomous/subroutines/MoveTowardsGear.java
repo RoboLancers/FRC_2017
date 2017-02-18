@@ -5,31 +5,24 @@ import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveTowardsTarget extends Command {
+public class MoveTowardsGear extends Command {
 
 	private double power;
-	private double ratio;
-	private boolean hasFinished;
 	
-	public MoveTowardsTarget(double power) {
+	public MoveTowardsGear(double power) {
 		requires(Robot.drivetrain);
 		requires(Robot.camera);
 		this.power = power;
-		if (power == 0) {
-			ratio = 3; 
-		} else {
-			ratio = 1;
-		}
     }
 
     protected void initialize() {
-    	hasFinished = false;
+
     }
 
     protected void execute() {
     	if (Robot.camera.gearTargetDetected()) {
-    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle(), 0)[0] / ratio);
-    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle(), 0)[1] / ratio);
+    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle(), 0)[0] / 3);
+    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle(), 0)[1] / 3);
     	} else {
     		Robot.drivetrain.setAllPowers(0);
     		System.out.println("No Target Detected");
@@ -38,7 +31,6 @@ public class MoveTowardsTarget extends Command {
 
     protected void end() {
     	Robot.drivetrain.setAllPowers(0);
-    	hasFinished = true;
     }
 
     protected void interrupted() {
@@ -47,6 +39,6 @@ public class MoveTowardsTarget extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return hasFinished;
+		return !Robot.camera.gearTargetDetected() || Robot.sensors.isGearPenetrated();
 	}
 }

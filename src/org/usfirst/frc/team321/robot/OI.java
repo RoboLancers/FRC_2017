@@ -1,11 +1,12 @@
 package org.usfirst.frc.team321.robot;
 
+import org.usfirst.frc.team321.robot.commands.DSolenoidHold;
 import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
 import org.usfirst.frc.team321.robot.commands.GroupConveyerIndexer;
 import org.usfirst.frc.team321.robot.commands.SwitchDriveMode;
 import org.usfirst.frc.team321.robot.commands.UseConveyor;
 import org.usfirst.frc.team321.robot.commands.UseShooter;
-import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain.DriveMode;
 import org.usfirst.frc.team321.robot.subsystems.GearHolder;
 import org.usfirst.frc.team321.robot.subsystems.GearShifter;
@@ -38,12 +39,16 @@ public class OI {
 			maniBtn[i] = new JoystickButton(maniStick, i);
 		}
 		
-		driveBtn[6].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
 		maniBtn[5].whileHeld(new SwitchDriveMode(DriveMode.AUTO_ADJUST));
-		//driveBtn[6].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
+		driveBtn[6].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
+		driveBtn[8].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
 		driveBtn[1].whenPressed(new DSolenoidToggle(Robot.gearshifter, GearShifter.gearShifter));
-		maniBtn[7].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
-		maniBtn[8].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
+		maniBtn[7].whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector));
+		maniBtn[8].whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap));
+		
+		//debug buttons
+		maniBtn[9].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
+		maniBtn[10].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
 		
 		maniBtn[11].whileHeld(new UseConveyor(-1));
 		maniBtn[1].whileHeld(new UseShooter(0.7));
