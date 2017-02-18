@@ -3,9 +3,9 @@ package org.usfirst.frc.team321.robot;
 import org.usfirst.frc.team321.robot.commands.DSolenoidHold;
 import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
 import org.usfirst.frc.team321.robot.commands.GroupConveyerIndexer;
+import org.usfirst.frc.team321.robot.commands.GroupFlapShooter;
 import org.usfirst.frc.team321.robot.commands.SwitchDriveMode;
 import org.usfirst.frc.team321.robot.commands.UseConveyor;
-import org.usfirst.frc.team321.robot.commands.UseShooter;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain.DriveMode;
 import org.usfirst.frc.team321.robot.subsystems.GearHolder;
@@ -40,20 +40,27 @@ public class OI {
 			maniBtn[i] = new JoystickButton(maniStick, i);
 		}
 		
+		//Drive Modes
 		maniBtn[5].whileHeld(new SwitchDriveMode(DriveMode.AUTO_ADJUST));
 		driveBtn[6].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
+		
+		//Pneumatics
 		driveBtn[8].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
 		driveBtn[1].whenPressed(new DSolenoidToggle(Robot.gearshifter, GearShifter.gearShifter));
-		maniBtn[7].whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
-		maniBtn[8].whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
+		maniBtn[9].whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
+		maniBtn[10].whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
 
-		maniBtn[11].whileHeld(new UseConveyor(-1));
-		maniBtn[1].whileHeld(new UseShooter(0.7));
+		//Mechanisms
+		maniBtn[7].whileHeld(new UseConveyor(-1));
+		maniBtn[1].whileHeld(new GroupFlapShooter(0.7));
 		maniBtn[2].whileHeld(new GroupConveyerIndexer(0.7));
 		
 		//debug buttons
-		maniBtn[9].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
-		maniBtn[10].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
-		//maniBtn[12].whenPressed(new StartSSHCamera());
+		maniBtn[11].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
+		maniBtn[12].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
+		maniBtn[4].whileHeld(new GroupFlapShooter(0.75));
+		driveBtn[2].whileHeld(new GroupFlapShooter(0.25));
+		driveBtn[3].whileHeld(new GroupFlapShooter(0.5));
+		driveBtn[4].whileHeld(new GroupFlapShooter(1));
 	}
 }

@@ -5,7 +5,7 @@ import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 public class JoystickUtil {
 	
-	public final static double tolerance = 0.15;
+	public final static double tolerance = 0.10;
 
 	public static double getLeftYAxisValue(){
 		if(Math.abs(OI.driveStick.getRawAxis(1)) > tolerance){
@@ -79,9 +79,9 @@ public class JoystickUtil {
 		return RobotUtil.squareAndKeepSign(getRightTrigger());
 	}
 	
-	public static double getThrustAxis() {
-		if (Math.abs(OI.maniStick.getRawAxis(3)) > tolerance) {
-			return OI.maniStick.getRawAxis(3);
+	public static double getThrustYAxis() {
+		if (Math.abs(OI.maniStick.getRawAxis(1)) > tolerance) {
+			return OI.maniStick.getRawAxis(1);
 		} else {
 			return 0;
 		}

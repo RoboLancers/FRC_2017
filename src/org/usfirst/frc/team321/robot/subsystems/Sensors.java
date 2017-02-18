@@ -15,6 +15,9 @@ public class Sensors extends Subsystem {
 	public DigitalInput touch;
 	public DigitalInput irSensor;
 	
+	private double startDisplacement;
+	public boolean isTracking;
+	
 	public Sensors() {
 		navX = new AHRS(SerialPort.Port.kMXP);
 		touch = new DigitalInput(RobotMap.BUMPER_TOUCH);
@@ -22,6 +25,9 @@ public class Sensors extends Subsystem {
 		
 		navX.reset();
 		navX.resetDisplacement();
+
+		isTracking = false;
+		startDisplacement = getRobotDisplacement();
 	}
 	
 	public boolean isGearLoaded() {
@@ -52,9 +58,28 @@ public class Sensors extends Subsystem {
 		return RobotUtil.floor(Math.hypot(navX.getVelocityX(), navX.getVelocityY()), 2);
 	}
 	
+	public double getRobotDisplacement() {
+		return RobotUtil.floor(Math.hypot(navX.getDisplacementX(), navX.getDisplacementY()), 2);
+	}
+	
 	public void resetNavX() {
 		navX.reset();
 		navX.resetDisplacement();
+	}
+	
+	public void startTracking() {
+		navX.resetDisplacement();
+		isTracking = true;
+		startDisplacement = getRobotDisplacement();
+	}
+	
+	public boolean hasDroveDistance(double meters) {
+		boolean hasDroven = Math.abs(getRobotDisplacement() - startDisplacement) > meters;
+		if (isTracking && hasDroven) {
+			isTracking = false;
+			return hasDroven;
+		}
+		return false;
 	}
 	
 	@Override

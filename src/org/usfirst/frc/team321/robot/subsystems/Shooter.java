@@ -30,8 +30,6 @@ public class Shooter extends Subsystem {
 		return Math.sqrt((gravity * (xdist * xdist))/(2.0 * Math.cos(shooterAngle) * Math.cos(shooterAngle) * (boilHeight - Math.tan(shooterAngle) * xdist)));
 	}
 	
-	//Imagine pandas eating cherry tomatoes
-	
 	public void setShooter(double power) {
 		shootMotorLeft.set(RobotUtil.range(power, -1, 1));
 		shootMotorRight.set(RobotUtil.range(power, -1, 1));

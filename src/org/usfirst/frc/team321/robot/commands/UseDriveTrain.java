@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class UseDriveTrain extends Command{
 	
 	private boolean hasFinished = false;
+	private double currentAngle = 0;
+	private double direction = 0;
 	
 	public UseDriveTrain(){
 		requires(Robot.drivetrain);
@@ -46,25 +48,40 @@ public class UseDriveTrain extends Command{
 			
 			case AUTO_ADJUST:
 				if (Robot.camera.gearTargetDetected()) {
-		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0.3, Robot.camera.gearTargetAngle(), 0)[0]);
-		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0.3, Robot.camera.gearTargetAngle(), 0)[1]);
+					currentAngle = Robot.camera.gearTargetAngle();
+					
+		    		direction = Math.signum(currentAngle);
+					
+		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0.55, RobotUtil.squareAndKeepSign(currentAngle), 0)[0]);
+		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0.55, RobotUtil.squareAndKeepSign(currentAngle), 0)[1]);
+		    		
 		    		if (Robot.sensors.isGearLoaded() && Robot.sensors.isGearPenetrated()) {
 		    			Robot.gearholder.openDoor();
+		    			Robot.sensors.startTracking();
 		    		}
 		    	} else if (Robot.camera.boilerTargetDetected()) {
 		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
 		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
+		    	} else if (!Robot.sensors.isTracking) { 
+			    	Robot.drivetrain.setLeftPowers(-direction * 0.4);
+			    	Robot.drivetrain.setRightPowers(direction * 0.4);
 		    	} else {
 		    		Robot.drivetrain.setAllPowers(0);
 		    	}
+		    	
 				break;
 				
 			default:
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
 		   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 		   		break;
-				
-		}	
+			
+		}
+		
+		if (Robot.sensors.hasDroveDistance(3)) {
+			Robot.gearholder.closeDoor();
+		}
+		
 	}
 
 	@Override

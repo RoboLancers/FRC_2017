@@ -1,13 +1,10 @@
 
 package org.usfirst.frc.team321.robot;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.usfirst.frc.team321.robot.autonomous.AutoGearAndCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoStandStill;
 import org.usfirst.frc.team321.robot.autonomous.AutoTurnTowardsTarget;
-import org.usfirst.frc.team321.robot.autonomous.MoveForwardTest;
+import org.usfirst.frc.team321.robot.autonomous.AutoMoveRobot;
 import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
 import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
@@ -20,6 +17,7 @@ import org.usfirst.frc.team321.robot.subsystems.IntakeFlap;
 import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
+import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -65,6 +63,7 @@ public class Robot extends IterativeRobot {
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
@@ -89,7 +88,7 @@ public class Robot extends IterativeRobot {
 		
 		chooser.addDefault("Stand Still", new AutoStandStill());
 		chooser.addObject("Turn to Target", new AutoTurnTowardsTarget());
-		chooser.addObject("Move Forward Test", new MoveForwardTest());
+		chooser.addObject("Move Forward Test", new AutoMoveRobot());
 		chooser.addObject("Put Gear and Cross Line", new AutoGearAndCrossLine());
 		
 		networkTable = NetworkTable.getTable("jetson");
@@ -97,6 +96,7 @@ public class Robot extends IterativeRobot {
 		networkTable.putString("Angle To Boiler", "Not Detected");
 		
 		SmartDashboard.putString("Angle To Gear", "Not Detected");
+		SmartDashboard.putString("Angle To Boiler", "Not Detected");
 	}
 
 	/**
@@ -111,9 +111,10 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
 		}
 	
-		SmartDashboard.putNumber("Angle", sensors.getRobotAngle());
-		SmartDashboard.putNumber("Heading", sensors.getRobotHeading());
+		SmartDashboard.putNumber("Robot Angle", sensors.getRobotAngle());
+		SmartDashboard.putNumber("Robot Heading", sensors.getRobotHeading());
 		SmartDashboard.putNumber("Robot Velocity", sensors.getRobotVelocity());
+		SmartDashboard.putNumber("Displacement", sensors.getRobotDisplacement());
 		SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
 		
 		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
@@ -121,6 +122,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
 		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Climber Engaged" : "Driving");
 	
+		SmartDashboard.putNumber("Shooter Adjustment", -JoystickUtil.getThrustYAxis());
+		
 		SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
 		
 		SmartDashboard.putBoolean("Gear Loaded", sensors.isGearLoaded());
@@ -165,7 +168,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		sshToCamera();
 		sensors.resetNavX();
 		
 		autonomousCommand = (Command) chooser.getSelected();
@@ -194,8 +196,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		sshToCamera();
-		
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -225,21 +225,5 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
-	}
-	
-	private void sshToCamera(){
-		try {
-			//String[] cmd = {"/bin/bash", "/home/lvuser/ssh.sh"};
-			//Process process = Runtime.getRuntime().exec(cmd);
-			//ProcessBuilder process = new ProcessBuilder(cmd);
-			//process.directory(new File("/"));
-			//process.start();
-			//Process newProcess = new ProcessBuilder(cmd).start();
-			Runtime rt = Runtime.getRuntime();
-			Process pr = rt.exec("ssh ubuntu@10.3.21.5 \"cd  /home/ubuntu/Desktop/FRC_2017_Image-Processing/ && python3 GearTargetDetection.py && python3 BoilerTargetDetection.py\"");
-			SmartDashboard.putString("Did run", "It ran");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

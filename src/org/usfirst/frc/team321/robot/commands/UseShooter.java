@@ -1,6 +1,8 @@
 package org.usfirst.frc.team321.robot.commands;
 
 import org.usfirst.frc.team321.robot.Robot;
+import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
+import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -35,7 +37,7 @@ public class UseShooter extends Command {
 	}
 	
 	protected void execute(){
-		Robot.shooter.setShooter(shooterVal);
+		Robot.shooter.setShooter(RobotUtil.range(shooterVal - JoystickUtil.getThrustYAxis()/4, -1, 1));
 	}
 
 	protected void end(){

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TurnTowardsTarget extends Command {
 
 	private double power;
-	private boolean hasFinished;
+	private boolean hasFinished = false;
 	
 	public TurnTowardsTarget(double power) {
 		requires(Robot.drivetrain);
@@ -35,6 +35,7 @@ public class TurnTowardsTarget extends Command {
 
     protected void interrupted() {
     	end();
+    	
     }
 
 	@Override
