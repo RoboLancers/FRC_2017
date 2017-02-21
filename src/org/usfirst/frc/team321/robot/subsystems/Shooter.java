@@ -21,8 +21,8 @@ public class Shooter extends Subsystem {
 		shootMotorLeft = new CANTalon(RobotMap.SHOOT_MOTOR_A);
 		shootMotorRight = new CANTalon(RobotMap.SHOOT_MOTOR_B);
 		
-		shootMotorLeft.setVoltageRampRate(5);
-		shootMotorRight.setVoltageRampRate(5);
+		shootMotorLeft.setVoltageRampRate(6);
+		shootMotorRight.setVoltageRampRate(6);
 	}
 	
 	public double calcVelocity(double dist) {

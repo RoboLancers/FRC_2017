@@ -16,7 +16,7 @@ public class Sensors extends Subsystem {
 	public DigitalInput irSensor;
 	
 	private double startDisplacement;
-	public boolean isTracking;
+	private boolean isTracking;
 	
 	public Sensors() {
 		navX = new AHRS(SerialPort.Port.kMXP);
@@ -38,8 +38,8 @@ public class Sensors extends Subsystem {
 		return !touch.get();
 	}
 	
-	public double[] moveInHeading(double power, double degrees) {
-		return RobotUtil.moveToTarget(power, navX.getAngle(), degrees);
+	public double[] moveInHeading(double power, double heading) {
+		return RobotUtil.moveToTarget(power, navX.getAngle(), heading);
 	}
 	
 	public double getRobotAngle() {
@@ -67,19 +67,22 @@ public class Sensors extends Subsystem {
 		navX.resetDisplacement();
 	}
 	
-	public void startTracking() {
+	public void startTrackingDistance() {
 		navX.resetDisplacement();
 		isTracking = true;
 		startDisplacement = getRobotDisplacement();
 	}
 	
+	public boolean isTrackingDistance() {
+		return isTracking;
+	}
+	
+	public void stopTrackingDistance() {
+		isTracking = false;
+	}
+	
 	public boolean hasDroveDistance(double meters) {
-		boolean hasDroven = Math.abs(getRobotDisplacement() - startDisplacement) > meters;
-		if (isTracking && hasDroven) {
-			isTracking = false;
-			return hasDroven;
-		}
-		return false;
+		return Math.abs(getRobotDisplacement() - startDisplacement) > meters;
 	}
 	
 	@Override

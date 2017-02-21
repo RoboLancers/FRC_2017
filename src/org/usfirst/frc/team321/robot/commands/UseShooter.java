@@ -37,7 +37,7 @@ public class UseShooter extends Command {
 	}
 	
 	protected void execute(){
-		Robot.shooter.setShooter(RobotUtil.range(shooterVal - JoystickUtil.getThrustYAxis()/4, -1, 1));
+		Robot.shooter.setShooter(RobotUtil.range(shooterVal - JoystickUtil.getRudderYAxis(), -1, 1));
 	}
 
 	protected void end(){

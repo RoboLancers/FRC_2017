@@ -52,15 +52,11 @@ public class OI {
 
 		//Mechanisms
 		maniBtn[7].whileHeld(new UseConveyor(-1));
-		maniBtn[1].whileHeld(new GroupFlapShooter(0.7));
+		maniBtn[1].whileHeld(new GroupFlapShooter(0));
 		maniBtn[2].whileHeld(new GroupConveyerIndexer(0.7));
 		
 		//debug buttons
 		maniBtn[11].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
 		maniBtn[12].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
-		maniBtn[4].whileHeld(new GroupFlapShooter(0.75));
-		driveBtn[2].whileHeld(new GroupFlapShooter(0.25));
-		driveBtn[3].whileHeld(new GroupFlapShooter(0.5));
-		driveBtn[4].whileHeld(new GroupFlapShooter(1));
 	}
 }

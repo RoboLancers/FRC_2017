@@ -57,12 +57,9 @@ public class UseDriveTrain extends Command{
 		    		
 		    		if (Robot.sensors.isGearLoaded() && Robot.sensors.isGearPenetrated()) {
 		    			Robot.gearholder.openDoor();
-		    			Robot.sensors.startTracking();
+		    			Robot.sensors.startTrackingDistance();
 		    		}
-		    	} else if (Robot.camera.boilerTargetDetected()) {
-		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
-		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
-		    	} else if (!Robot.sensors.isTracking) { 
+		    	} else if (!Robot.sensors.isTrackingDistance()) { 
 			    	Robot.drivetrain.setLeftPowers(-direction * 0.4);
 			    	Robot.drivetrain.setRightPowers(direction * 0.4);
 		    	} else {
@@ -70,6 +67,12 @@ public class UseDriveTrain extends Command{
 		    	}
 		    	
 				break;
+				/*
+				else if (Robot.camera.boilerTargetDetected()) {
+		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
+		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
+		    	}
+		    	*/
 				
 			default:
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
@@ -78,7 +81,9 @@ public class UseDriveTrain extends Command{
 			
 		}
 		
-		if (Robot.sensors.hasDroveDistance(3)) {
+		if (Robot.sensors.isTrackingDistance() && Robot.sensors.hasDroveDistance(3)) {
+			Robot.sensors.stopTrackingDistance();
+			direction = 0;
 			Robot.gearholder.closeDoor();
 		}
 		

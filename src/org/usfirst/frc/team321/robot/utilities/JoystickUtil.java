@@ -79,9 +79,9 @@ public class JoystickUtil {
 		return RobotUtil.squareAndKeepSign(getRightTrigger());
 	}
 	
-	public static double getThrustYAxis() {
-		if (Math.abs(OI.maniStick.getRawAxis(1)) > tolerance) {
-			return OI.maniStick.getRawAxis(1);
+	public static double getRudderYAxis() {
+		if (Math.abs(OI.maniStick.getRawAxis(3)) > tolerance) {
+			return (OI.maniStick.getRawAxis(3) + 100)/2;
 		} else {
 			return 0;
 		}

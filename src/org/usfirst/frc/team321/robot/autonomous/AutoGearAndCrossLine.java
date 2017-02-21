@@ -11,8 +11,8 @@ public class AutoGearAndCrossLine extends CommandGroup {
 		addSequential(new MoveTowardsGear(0.7));
 		addSequential(new MoveStraightNavX(-0.5, 0.7));
 		addSequential(new TurnInPlace(90, 2));
-		addSequential(new MoveStraightNavX(2, 1));
+		addSequential(new MoveStraightNavX(1, 2));
 		addSequential(new TurnInPlace(0, 2));
-		addSequential(new MoveStraightNavX(2.6, 1));
+		addSequential(new MoveStraightNavX(1, 3));
 	}
 }

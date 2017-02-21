@@ -21,16 +21,16 @@ public class MoveTowardsGear extends Command {
 
     protected void execute() {
     	if (Robot.camera.gearTargetDetected()) {
-    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle(), 0)[0] / 3);
-    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle(), 0)[1] / 3);
+    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, RobotUtil.squareAndKeepSign(Robot.camera.gearTargetAngle()), 0)[0]);
+    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, RobotUtil.squareAndKeepSign(Robot.camera.gearTargetAngle()), 0)[1]);
     	} else {
     		Robot.drivetrain.setAllPowers(0);
-    		System.out.println("No Target Detected");
     	}
     }
 
     protected void end() {
     	Robot.drivetrain.setAllPowers(0);
+    	Robot.gearholder.openDoor();
     }
 
     protected void interrupted() {

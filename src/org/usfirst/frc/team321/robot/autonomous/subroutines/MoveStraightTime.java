@@ -11,8 +11,6 @@ public class MoveStraightTime extends Command {
 	public double degrees;
 	public double power;
 	public double seconds;
-	public double startTime;
-	public boolean hasFinished = false;
 	
 	public MoveStraightTime(double power, double degrees, double seconds) {
 		requires(Robot.drivetrain);
@@ -23,7 +21,6 @@ public class MoveStraightTime extends Command {
     }
 
     protected void initialize() {
-    	hasFinished = false;
     	timer.reset();
     	timer.start();
     }
@@ -31,15 +28,10 @@ public class MoveStraightTime extends Command {
     protected void execute() {
     	Robot.drivetrain.setLeftPowers(Robot.sensors.moveInHeading(power, degrees)[0]);
     	Robot.drivetrain.setRightPowers(Robot.sensors.moveInHeading(power, degrees)[1]);
-    	
-    	if(timer.get() > seconds) {
-    		hasFinished = true;
-    	}
     }
 
     protected void end() {
     	Robot.drivetrain.setAllPowers(0);
-    	hasFinished = true;
     }
 
     protected void interrupted() {
@@ -47,7 +39,7 @@ public class MoveStraightTime extends Command {
     }
 
 	protected boolean isFinished() {
-		return hasFinished;
+		return timer.get() > seconds;
 	}
 
 }

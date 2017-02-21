@@ -1,10 +1,11 @@
 
 package org.usfirst.frc.team321.robot;
 
+import org.usfirst.frc.team321.robot.autonomous.AutoCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoGearAndCrossLine;
+import org.usfirst.frc.team321.robot.autonomous.AutoMoveRobot;
 import org.usfirst.frc.team321.robot.autonomous.AutoStandStill;
 import org.usfirst.frc.team321.robot.autonomous.AutoTurnTowardsTarget;
-import org.usfirst.frc.team321.robot.autonomous.AutoMoveRobot;
 import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
 import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
@@ -90,6 +91,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Turn to Target", new AutoTurnTowardsTarget());
 		chooser.addObject("Move Forward Test", new AutoMoveRobot());
 		chooser.addObject("Put Gear and Cross Line", new AutoGearAndCrossLine());
+		chooser.addObject("Cross the Line", new AutoCrossLine());
 		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putString("Angle To Gear", "Not Detected");
@@ -122,7 +124,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
 		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Climber Engaged" : "Driving");
 	
-		SmartDashboard.putNumber("Shooter Adjustment", -JoystickUtil.getThrustYAxis());
+		SmartDashboard.putNumber("Shooter Speed", -JoystickUtil.getRudderYAxis());
 		
 		SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
 		
@@ -200,7 +202,7 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		sensors.resetNavX();
+		Robot.gearholder.closeDoor();
 		
 		autonomousCommand = (Command) chooser.getSelected();
 		

@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnInPlace extends Command {
-	private Timer timer;
-	private boolean hasFinished;
+	private Timer timer = new Timer();
 	private double degrees;
 	private double seconds;
 	private double currentAngle;
@@ -16,7 +15,6 @@ public class TurnInPlace extends Command {
 	public TurnInPlace(double degrees, double seconds) {
 		this.degrees = degrees;
 		this.seconds = seconds;
-		hasFinished = false;
 	}
 
 	public void initialize() {
@@ -28,10 +26,6 @@ public class TurnInPlace extends Command {
 	public void execute() {
 		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.sensors.getRobotAngle(), degrees + currentAngle)[0] / 3);
 		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.sensors.getRobotAngle(), degrees + currentAngle)[1] / 3);
-		
-		if (timer.get() > seconds) {
-			hasFinished = true;
-		}
 	}
 	
 	public void end() {
@@ -40,6 +34,6 @@ public class TurnInPlace extends Command {
 	
 	@Override
 	protected boolean isFinished() {
-		return hasFinished;
+		return timer.get() > seconds;
 	}
 }
