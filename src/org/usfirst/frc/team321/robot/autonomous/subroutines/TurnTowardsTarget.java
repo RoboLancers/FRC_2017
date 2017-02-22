@@ -33,7 +33,6 @@ public class TurnTowardsTarget extends Command {
 
     protected void interrupted() {
     	end();
-    	
     }
 
 	@Override

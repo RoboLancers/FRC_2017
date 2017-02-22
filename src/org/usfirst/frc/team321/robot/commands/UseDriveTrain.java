@@ -16,7 +16,6 @@ public class UseDriveTrain extends Command{
 	
 	private boolean hasFinished = false;
 	private double currentAngle = 0;
-	private double direction = 0;
 	
 	public UseDriveTrain(){
 		requires(Robot.drivetrain);
@@ -50,8 +49,6 @@ public class UseDriveTrain extends Command{
 				if (Robot.camera.gearTargetDetected()) {
 					currentAngle = Robot.camera.gearTargetAngle();
 					
-		    		direction = Math.signum(currentAngle);
-					
 		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0.55, RobotUtil.squareAndKeepSign(currentAngle), 0)[0]);
 		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0.55, RobotUtil.squareAndKeepSign(currentAngle), 0)[1]);
 		    		
@@ -59,20 +56,17 @@ public class UseDriveTrain extends Command{
 		    			Robot.gearholder.openDoor();
 		    			Robot.sensors.startTrackingDistance();
 		    		}
-		    	} else if (!Robot.sensors.isTrackingDistance()) { 
-			    	Robot.drivetrain.setLeftPowers(-direction * 0.4);
-			    	Robot.drivetrain.setRightPowers(direction * 0.4);
 		    	} else {
 		    		Robot.drivetrain.setAllPowers(0);
 		    	}
 		    	
 				break;
-				/*
-				else if (Robot.camera.boilerTargetDetected()) {
-		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
-		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
-		    	}
-		    	*/
+				
+				//else if (Robot.camera.boilerTargetDetected()) {
+		    		//Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
+		    		//Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
+		    	//}
+		    	
 				
 			default:
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
@@ -83,10 +77,10 @@ public class UseDriveTrain extends Command{
 		
 		if (Robot.sensors.isTrackingDistance() && Robot.sensors.hasDroveDistance(3)) {
 			Robot.sensors.stopTrackingDistance();
-			direction = 0;
 			Robot.gearholder.closeDoor();
 		}
-		
+		//drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
+   		//drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 	}
 
 	@Override

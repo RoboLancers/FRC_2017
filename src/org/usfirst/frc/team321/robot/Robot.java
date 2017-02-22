@@ -22,6 +22,7 @@ import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -113,7 +114,7 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
 		}
 	
-		SmartDashboard.putNumber("Robot Angle", sensors.getRobotAngle());
+		SmartDashboard.putNumber("Right Joystick Value", JoystickUtil.getRightTriggerNormalized());
 		SmartDashboard.putNumber("Robot Heading", sensors.getRobotHeading());
 		SmartDashboard.putNumber("Robot Velocity", sensors.getRobotVelocity());
 		SmartDashboard.putNumber("Displacement", sensors.getRobotDisplacement());
@@ -122,9 +123,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
 		SmartDashboard.putString("Gear Shifer", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Slow" : "Fast" );
 		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
-		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Climber Engaged" : "Driving");
+		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Driving" : "Climber Engaged");
 	
-		SmartDashboard.putNumber("Shooter Speed", -JoystickUtil.getRudderYAxis());
+		SmartDashboard.putNumber("Shooter Speed", JoystickUtil.getRudderYAxis());
 		
 		SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
 		
@@ -140,6 +141,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Gear Shifter Running", gearshifter);
 		SmartDashboard.putData("Intake Flap Running", intakeflap);
 		SmartDashboard.putData("Indexer Running", indexer);
+		//SmartDashboard.putData("Camera", camera);
+		//SmartDashboard.putData("Camera", (Sendable) camera.output);
 	}
 	
 	/**
@@ -149,7 +152,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-		new DSolenoidToggle(Robot.climber, Climber.climberToggle, DoubleSolenoid.Value.kReverse);
+		new DSolenoidToggle(Robot.climber, Climber.climberToggle, DoubleSolenoid.Value.kForward);
 	}
 
 	@Override

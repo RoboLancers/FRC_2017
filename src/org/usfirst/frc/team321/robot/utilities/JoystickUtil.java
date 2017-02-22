@@ -80,10 +80,6 @@ public class JoystickUtil {
 	}
 	
 	public static double getRudderYAxis() {
-		if (Math.abs(OI.maniStick.getRawAxis(3)) > tolerance) {
-			return (OI.maniStick.getRawAxis(3) + 100)/2;
-		} else {
-			return 0;
-		}
+		return (OI.maniStick.getRawAxis(3) + 1)/2;
 	}
 }

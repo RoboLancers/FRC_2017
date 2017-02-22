@@ -14,7 +14,7 @@ public class Camera extends Subsystem {
 	UsbCamera camera;
 	MjpegServer mjpegServer;
 	CvSink cvSink;
-	CvSource output;
+	public CvSource output;
 	
 	public Camera(){
 		camera = new UsbCamera("Driver Camera 0", 0);
