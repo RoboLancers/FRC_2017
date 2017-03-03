@@ -21,6 +21,10 @@ public class GearShifter extends Subsystem {
 	public void setLowGear() {
 		gearShifter.set(DoubleSolenoid.Value.kForward);
 	}
+	
+	public boolean isHighGear() {
+		return (gearShifter.get() == DoubleSolenoid.Value.kForward ? false : true);
+	}
 
 	@Override
 	protected void initDefaultCommand() {

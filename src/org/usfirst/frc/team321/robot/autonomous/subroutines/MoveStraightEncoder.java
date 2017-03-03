@@ -29,7 +29,7 @@ public class MoveStraightEncoder extends Command {
 
     @Override
     protected boolean isFinished() {
-    	leftFinished = Math.abs(Robot.drivetrain.getLeftDistance()) > distanceInMeters;
+    	//leftFinished = Math.abs(Robot.drivetrain.getLeftDistance()) > distanceInMeters;
 		rightFinished = Math.abs(Robot.drivetrain.getRightDistance()) > distanceInMeters;
 		return leftFinished || rightFinished;
     }

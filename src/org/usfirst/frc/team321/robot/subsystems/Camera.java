@@ -22,7 +22,7 @@ public class Camera extends Subsystem {
 		mjpegServer.setSource(camera);
 		cvSink = new CvSink("CV Driver Camera 0");
 		cvSink.setSource(camera);
-		output = new CvSource("Driver Cam", PixelFormat.kMJPEG, 1280, 720, 30);
+		output = new CvSource("Driver Cam", PixelFormat.kMJPEG, 640, 480, 30);
 	}
 	
 	public boolean gearTargetDetected(){
@@ -49,6 +49,10 @@ public class Camera extends Subsystem {
 	
 	public double boilerTargetAngle(){
 		return Double.parseDouble(Robot.networkTable.getString("Angle To Boiler", "Not Detected")); 
+	}
+	
+	public double boilerTargetDistance() {
+		return Double.parseDouble(Robot.networkTable.getString("Distance To Boiler", "Not Detected"));
 	}
 	
 	protected void initDefaultCommand() {

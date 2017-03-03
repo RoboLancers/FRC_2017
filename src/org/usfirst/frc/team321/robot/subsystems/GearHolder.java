@@ -22,6 +22,10 @@ public class GearHolder extends Subsystem {
 		gearEjector.set(DoubleSolenoid.Value.kForward);
 	}
 	
+	public boolean isHolding() {
+		return (gearEjector.get() == DoubleSolenoid.Value.kForward ? true : false);
+	}
+	
 	public void initDefaultCommand(){
 		
 	}

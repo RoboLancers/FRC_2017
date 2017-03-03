@@ -16,6 +16,8 @@ public class UseIndexer extends Command {
 	}
 	
 	public UseIndexer(double power) {
+		requires(Robot.indexer);
+		hasFinished = false;
 		this.power = power;
 	}
 	

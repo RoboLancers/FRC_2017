@@ -11,6 +11,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shooter extends Subsystem {
 
 	public CANTalon shootMotorLeft, shootMotorRight;
+	public Encoder shooterEncoder;
+	
+	public static final double ticksPerRevolution = 1024;
+	public static final double wheelCircumferance = 0.1016 * Math.PI;
+	public static final double distancePerPulse = wheelCircumferance / ticksPerRevolution; 
 	
 	public static final double boilHeight = 2.0938;
 	public static final double shooterAngle = 89.15;
@@ -21,8 +26,20 @@ public class Shooter extends Subsystem {
 		shootMotorLeft = new CANTalon(RobotMap.SHOOT_MOTOR_A);
 		shootMotorRight = new CANTalon(RobotMap.SHOOT_MOTOR_B);
 		
+		shooterEncoder = new Encoder(1, 2); //Encoder has 2 ports fsr kill me
+		
 		shootMotorLeft.setVoltageRampRate(6);
 		shootMotorRight.setVoltageRampRate(6);
+		
+		shooterEncoder.setDistancePerPulse(distancePerPulse);
+	}
+
+	public double getRPM() {
+		return shooterEncoder.getRate() * 60 / wheelCircumferance;
+	}
+	
+	public void setRPM(double rpm) {
+		setShooter(RobotUtil.moveToTarget(0, getRPM(), rpm)[1]);
 	}
 	
 	public double calcVelocity(double dist) {

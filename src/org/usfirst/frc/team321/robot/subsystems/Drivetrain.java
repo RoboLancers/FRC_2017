@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Drivetrain extends Subsystem {
 	
 	public CANTalon leftFront, leftBack, rightFront, rightBack;
+	public Encoder leftSide, rightSide;
 	public static DriveMode driveMode;
 	
     public final double wheelDiameter = 1.2192;
@@ -33,6 +34,10 @@ public class Drivetrain extends Subsystem {
 		
 		rightFront = new CANTalon(RobotMap.RIGHT_FRONT_MOTOR);
 		rightBack = new CANTalon(RobotMap.RIGHT_BACK_MOTOR);
+		
+		//leftSide.setDistancePerPulse(0.319024 / ticksPerRevolution);
+		//rightSide.setDistancePerPulse(0.319024 / ticksPerRevolution);
+		
 	}
 	
 	public void initDefaultCommand() {
@@ -82,10 +87,6 @@ public class Drivetrain extends Subsystem {
 		leftBack.setEncPosition(distanceToEncTicks(meters));
 		rightFront.setEncPosition(distanceToEncTicks(meters));
 		rightBack.setEncPosition(distanceToEncTicks(meters));
-	}
-	
-	public double getLeftDistance() {
-		return leftFront.getEncPosition() / ticksPerMeter;
 	}
 	
 	public double getRightDistance() {

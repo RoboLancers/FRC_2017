@@ -106,22 +106,22 @@ public class Robot extends IterativeRobot {
 	 * Programmer created method that displays robot data
 	 */
 	public void displayRobotData() {
-		if(camera.gearTargetDetected()){
-			SmartDashboard.putString("Angle To Gear", networkTable.getString("Angle To Gear", "Not Detected"));
-		}
+		SmartDashboard.putString("Angle To Gear", networkTable.getString("Angle To Gear", "Not Detected"));		
+		SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
+		SmartDashboard.putString("Distance To Boiler", networkTable.getString("Distance To Boiler", "Not Detected"));
+
+		SmartDashboard.putBoolean("Gear Holding", gearholder.isHolding());
+		SmartDashboard.putBoolean("Gear Shifting", gearshifter.isHighGear());
+		SmartDashboard.putBoolean("Intake Flapping", intakeflap.isBallIntaking());
+		SmartDashboard.putBoolean("Climbing", climber.isClimbing());
 		
-		if(camera.boilerTargetDetected()){
-			SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
-		}
-	
-		SmartDashboard.putNumber("Right Joystick Value", JoystickUtil.getRightTriggerNormalized());
 		SmartDashboard.putNumber("Robot Heading", sensors.getRobotHeading());
 		SmartDashboard.putNumber("Robot Velocity", sensors.getRobotVelocity());
 		SmartDashboard.putNumber("Displacement", sensors.getRobotDisplacement());
 		SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
 		
 		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
-		SmartDashboard.putString("Gear Shifer", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Slow" : "Fast" );
+		SmartDashboard.putString("Gear Shifter", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Slow" : "Fast");
 		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
 		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Driving" : "Climber Engaged");
 	
@@ -135,12 +135,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Shooter Running", shooter);
 		SmartDashboard.putData("Climb Switch Running", climber);
 		SmartDashboard.putData("Conveyor Running", conveyor);
+		SmartDashboard.putData("Indexer Running", indexer);
 		SmartDashboard.putData("Drive Train Running", drivetrain);
 		SmartDashboard.putData("Pneumatics Running", pneumatics);
 		SmartDashboard.putData("Gear Door Running", gearholder);
 		SmartDashboard.putData("Gear Shifter Running", gearshifter);
 		SmartDashboard.putData("Intake Flap Running", intakeflap);
-		SmartDashboard.putData("Indexer Running", indexer);
 		//SmartDashboard.putData("Camera", camera);
 		//SmartDashboard.putData("Camera", (Sendable) camera.output);
 	}

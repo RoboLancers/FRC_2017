@@ -75,7 +75,7 @@ public class UseDriveTrain extends Command{
 			
 		}
 		
-		if (Robot.sensors.isTrackingDistance() && Robot.sensors.hasDroveDistance(3)) {
+		if (Robot.sensors.isTrackingDistance() && Robot.sensors.hasDroveDistance(1)) {
 			Robot.sensors.stopTrackingDistance();
 			Robot.gearholder.closeDoor();
 		}

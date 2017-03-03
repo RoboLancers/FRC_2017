@@ -22,6 +22,10 @@ public class IntakeFlap extends Subsystem {
 		intakeflap.set(DoubleSolenoid.Value.kForward);
 	}
 	
+	public boolean isBallIntaking() {
+		return (intakeflap.get() == DoubleSolenoid.Value.kForward ? true : false);
+	}
+	
 	@Override
 	public void initDefaultCommand() {
 		
