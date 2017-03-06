@@ -20,18 +20,18 @@ public class Shooter extends Subsystem {
 	public static final double boilHeight = 2.0938;
 	public static final double shooterAngle = 89.15;
 	public static final double RPM = 18730.0;
-	public static final double gravity = 9.80665;
+	public static final double gravity = -9.80665;
 	
 	public Shooter() {
 		shootMotorLeft = new CANTalon(RobotMap.SHOOT_MOTOR_A);
 		shootMotorRight = new CANTalon(RobotMap.SHOOT_MOTOR_B);
 		
-		shooterEncoder = new Encoder(1, 2); //Encoder has 2 ports fsr kill me
+		//shooterEncoder = new Encoder(1, 2); //Encoder has 2 ports fsr kill me
 		
 		shootMotorLeft.setVoltageRampRate(6);
 		shootMotorRight.setVoltageRampRate(6);
 		
-		shooterEncoder.setDistancePerPulse(distancePerPulse);
+		//shooterEncoder.setDistancePerPulse(distancePerPulse);
 	}
 
 	public double getRPM() {
@@ -48,8 +48,13 @@ public class Shooter extends Subsystem {
 	}
 	
 	public void setShooter(double power) {
-		shootMotorLeft.set(RobotUtil.range(power, -1, 1));
-		shootMotorRight.set(RobotUtil.range(power, -1, 1));
+		try {
+			shootMotorLeft.set(RobotUtil.range(power, -1, 1));
+			shootMotorRight.set(RobotUtil.range(power, -1, 1));
+		} catch (Exception e) {
+			shootMotorLeft.set(0);
+			shootMotorRight.set(0);
+		}
 	}
 	
 	@Override

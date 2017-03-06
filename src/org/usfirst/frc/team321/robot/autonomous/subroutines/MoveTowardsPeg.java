@@ -5,11 +5,11 @@ import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveTowardsGear extends Command {
+public class MoveTowardsPeg extends Command {
 
 	private double power;
 	
-	public MoveTowardsGear(double power) {
+	public MoveTowardsPeg(double power) {
 		requires(Robot.drivetrain);
 		requires(Robot.camera);
 		this.power = power;
@@ -24,7 +24,7 @@ public class MoveTowardsGear extends Command {
     		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, RobotUtil.squareAndKeepSign(Robot.camera.gearTargetAngle()), 0)[0]);
     		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, RobotUtil.squareAndKeepSign(Robot.camera.gearTargetAngle()), 0)[1]);
     	} else {
-    		Robot.drivetrain.setAllPowers(0);
+    		Robot.drivetrain.setAllPowers(0.2);
     	}
     }
 

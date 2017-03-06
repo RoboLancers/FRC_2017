@@ -15,17 +15,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Drivetrain extends Subsystem {
 	
 	public CANTalon leftFront, leftBack, rightFront, rightBack;
-	public Encoder leftSide, rightSide;
+	public Encoder leftEncoder, rightEncoder;
 	public static DriveMode driveMode;
 	
-    public final double wheelDiameter = 1.2192;
-  
+    public final double wheelDiameter = 0.1016;
+    public final double pulsePerRevolution = 256;
     public final double wheelCircumference = wheelDiameter * Math.PI;
-
-    public final double ticksPerRevolution = 1440;
+    public final double meterPerPulse = wheelCircumference / pulsePerRevolution;
+	public static double targetRPM = 500;
     
-    public final double ticksPerMeter = ticksPerRevolution / wheelCircumference;
-	
 	public Drivetrain () {
 		super("Drive Train");
 		
@@ -35,9 +33,14 @@ public class Drivetrain extends Subsystem {
 		rightFront = new CANTalon(RobotMap.RIGHT_FRONT_MOTOR);
 		rightBack = new CANTalon(RobotMap.RIGHT_BACK_MOTOR);
 		
-		//leftSide.setDistancePerPulse(0.319024 / ticksPerRevolution);
-		//rightSide.setDistancePerPulse(0.319024 / ticksPerRevolution);
+		//leftEncoder = new Encoder(1, 2);
+		//rightEncoder = new Encoder(3, 4);
 		
+		//leftEncoder.setDistancePerPulse(0.319024 / pulsePerRevolution);
+		//rightEncoder.setDistancePerPulse(0.319024 / pulsePerRevolution);
+		
+		//leftEncoder.reset();
+		//rightEncoder.reset();
 	}
 	
 	public void initDefaultCommand() {
@@ -45,7 +48,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public static enum DriveMode {
-		DRIVING, AUTO_ADJUST, CLIMBING;
+		DRIVING, AUTO_ADJUST;
 	} 
 	
 	public void setLeftPowers(double power){
@@ -72,14 +75,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public int distanceToEncTicks(double meters) {
-		return (int)(meters / ticksPerMeter);
-	}
-    
-	public void resetEncoders() {
-		leftFront.setPosition(0);
-		leftBack.setPosition(0);
-		rightFront.setPosition(0);
-		rightBack.setPosition(0);
+		return (int)(meters / meterPerPulse);
 	}
 	
 	public void driveDistance(double meters) {
@@ -89,7 +85,24 @@ public class Drivetrain extends Subsystem {
 		rightBack.setEncPosition(distanceToEncTicks(meters));
 	}
 	
+	public double getLeftRPM() {
+		return leftEncoder.getRate() * 60 / (2 * Math.PI * (wheelDiameter/2));
+	}
+	
+	public double getRightRPM() {
+		return rightEncoder.getRate() * 60 / (2 * Math.PI * (wheelDiameter/2));
+	}
+	
 	public double getRightDistance() {
-		return rightFront.getEncPosition() / ticksPerMeter;
+		return rightEncoder.getDistance();
+	}
+	
+	public double getLeftDistance() {
+		return leftEncoder.getDistance();
+	}
+	
+	public void resetEncoders() {
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 }

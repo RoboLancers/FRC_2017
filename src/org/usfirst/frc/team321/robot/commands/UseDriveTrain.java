@@ -30,20 +30,17 @@ public class UseDriveTrain extends Command{
 	protected void execute(){
 		switch(Drivetrain.driveMode){
 			case DRIVING:
+				if (Math.abs(Robot.drivetrain.getLeftRPM()) > Drivetrain.targetRPM && 
+						Math.abs(Robot.drivetrain.getRightRPM()) > Drivetrain.targetRPM &&
+						Math.signum(JoystickUtil.getLeftYAxisValue()) == Math.signum(JoystickUtil.getRightYAxisValue())) {
+					Robot.gearshifter.setHighGear();
+				} else {
+					Robot.gearshifter.setLowGear();
+				}
+				
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
 		   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 		   		break;
-		   		
-			case CLIMBING:
-				if (JoystickUtil.getLeftYAxisValue() > 0.1) {
-					Climber.climberToggle.set(DoubleSolenoid.Value.kReverse);
-				} else if (JoystickUtil.getLeftYAxisValue() < -0.1) {
-					Climber.climberToggle.set(DoubleSolenoid.Value.kForward);
-				}
-				
-				drivetrain.setLeftPowers(-JoystickUtil.getRightYAxisNormalized());
-			   	drivetrain.setRightPowers(-JoystickUtil.getLeftYAxisNormalized());
-				break;
 			
 			case AUTO_ADJUST:
 				if (Robot.camera.gearTargetDetected()) {
@@ -56,17 +53,16 @@ public class UseDriveTrain extends Command{
 		    			Robot.gearholder.openDoor();
 		    			Robot.sensors.startTrackingDistance();
 		    		}
+		    	} else if (Robot.camera.boilerTargetDetected()){
+					currentAngle = Robot.camera.boilerTargetAngle();
+					
+					Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, RobotUtil.squareAndKeepSign(currentAngle), 0)[0]);
+		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, RobotUtil.squareAndKeepSign(currentAngle), 0)[1]);
 		    	} else {
 		    		Robot.drivetrain.setAllPowers(0);
 		    	}
 		    	
 				break;
-				
-				//else if (Robot.camera.boilerTargetDetected()) {
-		    		//Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[0] / 3);
-		    		//Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0)[1] / 3);
-		    	//}
-		    	
 				
 			default:
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
@@ -79,8 +75,6 @@ public class UseDriveTrain extends Command{
 			Robot.sensors.stopTrackingDistance();
 			Robot.gearholder.closeDoor();
 		}
-		//drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
-   		//drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 	}
 
 	@Override
@@ -97,6 +91,4 @@ public class UseDriveTrain extends Command{
 	protected void interrupted() {
 		hasFinished = true;
 	}
-	
-	
 }

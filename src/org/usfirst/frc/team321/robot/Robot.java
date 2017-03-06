@@ -4,6 +4,7 @@ package org.usfirst.frc.team321.robot;
 import org.usfirst.frc.team321.robot.autonomous.AutoCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoGearAndCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoMoveRobot;
+import org.usfirst.frc.team321.robot.autonomous.AutoPlantGear;
 import org.usfirst.frc.team321.robot.autonomous.AutoStandStill;
 import org.usfirst.frc.team321.robot.autonomous.AutoTurnTowardsTarget;
 import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
@@ -22,7 +23,6 @@ import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -93,6 +93,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Move Forward Test", new AutoMoveRobot());
 		chooser.addObject("Put Gear and Cross Line", new AutoGearAndCrossLine());
 		chooser.addObject("Cross the Line", new AutoCrossLine());
+		chooser.addObject("Place Gear", new AutoPlantGear());
 		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putString("Angle To Gear", "Not Detected");
@@ -126,23 +127,13 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Driving" : "Climber Engaged");
 	
 		SmartDashboard.putNumber("Shooter Speed", JoystickUtil.getRudderYAxis());
+		SmartDashboard.putNumber("Left Joystick", -JoystickUtil.getLeftXAxisNormalized());
+		SmartDashboard.putNumber("Right Joystick", -JoystickUtil.getRightXAxisNormalized());
 		
 		SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
 		
 		SmartDashboard.putBoolean("Gear Loaded", sensors.isGearLoaded());
 		SmartDashboard.putBoolean("Touch Pad", sensors.isGearPenetrated());
-		
-		SmartDashboard.putData("Shooter Running", shooter);
-		SmartDashboard.putData("Climb Switch Running", climber);
-		SmartDashboard.putData("Conveyor Running", conveyor);
-		SmartDashboard.putData("Indexer Running", indexer);
-		SmartDashboard.putData("Drive Train Running", drivetrain);
-		SmartDashboard.putData("Pneumatics Running", pneumatics);
-		SmartDashboard.putData("Gear Door Running", gearholder);
-		SmartDashboard.putData("Gear Shifter Running", gearshifter);
-		SmartDashboard.putData("Intake Flap Running", intakeflap);
-		//SmartDashboard.putData("Camera", camera);
-		//SmartDashboard.putData("Camera", (Sendable) camera.output);
 	}
 	
 	/**

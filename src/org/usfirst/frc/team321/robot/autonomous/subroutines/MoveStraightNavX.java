@@ -7,24 +7,30 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveStraightNavX extends Command{
 	
-	private double currentAngle;
+	private double targetAngle;
 	private double power, distance;
 	
 	public MoveStraightNavX(double power, double distance){
 		this.power = power;
 		this.distance = distance;
+		this.targetAngle = Robot.sensors.getRobotAngle();
+	}
+	
+	public MoveStraightNavX(double power, double distance, double targetAngle)  {
+		this.power = power;
+		this.distance = distance;
+		this.targetAngle = targetAngle;
 	}
 
 	@Override
 	protected void initialize() {
-		currentAngle = Robot.sensors.getRobotAngle();
 		Robot.sensors.navX.resetDisplacement();
 	}
 
 	@Override
 	protected void execute() {
-		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, Robot.sensors.getRobotAngle(), currentAngle)[0]);
-		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, Robot.sensors.getRobotAngle(), currentAngle)[1]);
+		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, Robot.sensors.getRobotAngle(), targetAngle)[0]);
+		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, Robot.sensors.getRobotAngle(), targetAngle)[1]);
 	}
 
 	@Override
