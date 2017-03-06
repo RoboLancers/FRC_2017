@@ -14,11 +14,17 @@ public class MoveStraightTime extends Command {
 	
 	public MoveStraightTime(double power, double degrees, double seconds) {
 		requires(Robot.drivetrain);
-		requires(Robot.sensors);
 		this.power = power;
 		this.degrees = degrees;
 		this.seconds = seconds;
     }
+	
+	public MoveStraightTime(double power, double seconds) {
+		requires(Robot.drivetrain);
+		this.power = power;
+		this.degrees = Robot.sensors.getRobotAngle();
+		this.seconds = seconds;
+	}
 
     protected void initialize() {
     	timer.reset();

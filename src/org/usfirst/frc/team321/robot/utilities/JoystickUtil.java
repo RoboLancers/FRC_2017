@@ -20,8 +20,8 @@ public class JoystickUtil {
 	}
 	
 	public static double getRightYAxisValue(){
-		if(Math.abs(OI.driveStick.getRawAxis(5)) > tolerance){
-			return OI.driveStick.getRawAxis(5);
+		if(Math.abs(OI.driveStick.getRawAxis(4)) > tolerance){
+			return OI.driveStick.getRawAxis(4);
 		}else{
 			return 0;
 		}

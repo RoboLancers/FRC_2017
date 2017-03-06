@@ -6,7 +6,7 @@ import org.usfirst.frc.team321.robot.commands.GroupConveyerIndexer;
 import org.usfirst.frc.team321.robot.commands.GroupFlapShooter;
 import org.usfirst.frc.team321.robot.commands.SwitchDriveMode;
 import org.usfirst.frc.team321.robot.commands.UseConveyor;
-import org.usfirst.frc.team321.robot.commands.UseIndexer;
+import org.usfirst.frc.team321.robot.commands.UseShooter;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain.DriveMode;
 import org.usfirst.frc.team321.robot.subsystems.GearHolder;
@@ -43,7 +43,6 @@ public class OI {
 		
 		//Drive Modes
 		maniBtn[5].whileHeld(new SwitchDriveMode(DriveMode.AUTO_ADJUST));
-		driveBtn[6].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
 		
 		//Pneumatics
 		driveBtn[8].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
@@ -53,11 +52,12 @@ public class OI {
 
 		//Mechanisms
 		maniBtn[7].whileHeld(new UseConveyor(-1));
-		maniBtn[1].whileHeld(new GroupFlapShooter(0));
+		maniBtn[1].whileHeld(new GroupFlapShooter());
 		maniBtn[2].whileHeld(new GroupConveyerIndexer(0.7));
 		
 		//debug buttons
 		maniBtn[11].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
 		maniBtn[12].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
+		maniBtn[4].whileHeld(new UseShooter());
 	}
 }

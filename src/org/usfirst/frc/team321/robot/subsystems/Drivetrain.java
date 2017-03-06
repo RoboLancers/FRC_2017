@@ -33,14 +33,14 @@ public class Drivetrain extends Subsystem {
 		rightFront = new CANTalon(RobotMap.RIGHT_FRONT_MOTOR);
 		rightBack = new CANTalon(RobotMap.RIGHT_BACK_MOTOR);
 		
-		//leftEncoder = new Encoder(1, 2);
-		//rightEncoder = new Encoder(3, 4);
+		leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_A, RobotMap.LEFT_ENCODER_B);
+		rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_A, RobotMap.RIGHT_ENCODER_B);
 		
-		//leftEncoder.setDistancePerPulse(0.319024 / pulsePerRevolution);
-		//rightEncoder.setDistancePerPulse(0.319024 / pulsePerRevolution);
+		leftEncoder.setDistancePerPulse(meterPerPulse);
+		rightEncoder.setDistancePerPulse(meterPerPulse);
 		
-		//leftEncoder.reset();
-		//rightEncoder.reset();
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 	
 	public void initDefaultCommand() {
@@ -52,14 +52,14 @@ public class Drivetrain extends Subsystem {
 	} 
 	
 	public void setLeftPowers(double power){
-		power = power * 1.0;
+		power = power * 0.8;
 		
 		leftFront.set(RobotUtil.range(power, -1, 1));
 		leftBack.set(RobotUtil.range(power, -1, 1));
 	}
 	
 	public void setRightPowers(double power){
-		power = power * -1.0;
+		power = power * -0.8;
 		
 		rightFront.set(RobotUtil.range(power, -1, 1));
 		rightBack.set(RobotUtil.range(power, -1, 1));
@@ -77,14 +77,7 @@ public class Drivetrain extends Subsystem {
 	public int distanceToEncTicks(double meters) {
 		return (int)(meters / meterPerPulse);
 	}
-	
-	public void driveDistance(double meters) {
-		leftFront.setEncPosition(distanceToEncTicks(meters));
-		leftBack.setEncPosition(distanceToEncTicks(meters));
-		rightFront.setEncPosition(distanceToEncTicks(meters));
-		rightBack.setEncPosition(distanceToEncTicks(meters));
-	}
-	
+
 	public double getLeftRPM() {
 		return leftEncoder.getRate() * 60 / (2 * Math.PI * (wheelDiameter/2));
 	}

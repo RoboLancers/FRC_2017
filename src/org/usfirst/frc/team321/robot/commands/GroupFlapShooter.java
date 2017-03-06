@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class GroupFlapShooter extends CommandGroup {
-	public GroupFlapShooter(double power) {
-		addParallel(new UseShooter(power));
+	public GroupFlapShooter() {
+		addParallel(new UseShooter());
 		addParallel(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
 	}
 }

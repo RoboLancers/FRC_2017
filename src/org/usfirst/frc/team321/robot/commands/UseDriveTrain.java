@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class UseDriveTrain extends Command{
 	
 	private boolean hasFinished = false;
+	private double[] motorSpeed;
 	private double currentAngle = 0;
 	
 	public UseDriveTrain(){
@@ -30,6 +31,7 @@ public class UseDriveTrain extends Command{
 	protected void execute(){
 		switch(Drivetrain.driveMode){
 			case DRIVING:
+				/*
 				if (Math.abs(Robot.drivetrain.getLeftRPM()) > Drivetrain.targetRPM && 
 						Math.abs(Robot.drivetrain.getRightRPM()) > Drivetrain.targetRPM &&
 						Math.signum(JoystickUtil.getLeftYAxisValue()) == Math.signum(JoystickUtil.getRightYAxisValue())) {
@@ -37,6 +39,7 @@ public class UseDriveTrain extends Command{
 				} else {
 					Robot.gearshifter.setLowGear();
 				}
+				*/
 				
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
 		   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
@@ -45,9 +48,10 @@ public class UseDriveTrain extends Command{
 			case AUTO_ADJUST:
 				if (Robot.camera.gearTargetDetected()) {
 					currentAngle = Robot.camera.gearTargetAngle();
+					motorSpeed = RobotUtil.moveToTarget(0.55, currentAngle, 0);
 					
-		    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0.55, RobotUtil.squareAndKeepSign(currentAngle), 0)[0]);
-		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0.55, RobotUtil.squareAndKeepSign(currentAngle), 0)[1]);
+		    		Robot.drivetrain.setLeftPowers(motorSpeed[0]);
+		    		Robot.drivetrain.setRightPowers(motorSpeed[1]);
 		    		
 		    		if (Robot.sensors.isGearLoaded() && Robot.sensors.isGearPenetrated()) {
 		    			Robot.gearholder.openDoor();
@@ -56,8 +60,8 @@ public class UseDriveTrain extends Command{
 		    	} else if (Robot.camera.boilerTargetDetected()){
 					currentAngle = Robot.camera.boilerTargetAngle();
 					
-					Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(0, RobotUtil.squareAndKeepSign(currentAngle), 0)[0]);
-		    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(0, RobotUtil.squareAndKeepSign(currentAngle), 0)[1]);
+					Robot.drivetrain.setLeftPowers((RobotUtil.moveToTarget(0, currentAngle, 0)[0]));
+		    		Robot.drivetrain.setRightPowers((RobotUtil.moveToTarget(0, currentAngle, 0)[1]));
 		    	} else {
 		    		Robot.drivetrain.setAllPowers(0);
 		    	}

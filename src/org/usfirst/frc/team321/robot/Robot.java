@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team321.robot;
 
+import org.usfirst.frc.team321.robot.autonomous.AutoBallShoot;
 import org.usfirst.frc.team321.robot.autonomous.AutoCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoGearAndCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoMoveRobot;
@@ -88,10 +89,14 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putData("Auto mode", chooser);
 		
+		
 		chooser.addDefault("Stand Still", new AutoStandStill());
 		chooser.addObject("Turn to Target", new AutoTurnTowardsTarget());
 		chooser.addObject("Move Forward Test", new AutoMoveRobot());
-		chooser.addObject("Put Gear and Cross Line", new AutoGearAndCrossLine());
+		chooser.addObject("Left: Put Gear and Cross Line", new AutoGearAndCrossLine(true));
+		chooser.addObject("Right: Put Gear and Cross Line", new AutoGearAndCrossLine(false));
+		chooser.addObject("Left: Auto Ball Shoot", new AutoBallShoot(true));
+		chooser.addObject("Right: Auto Ball Shoot", new AutoBallShoot(false));
 		chooser.addObject("Cross the Line", new AutoCrossLine());
 		chooser.addObject("Place Gear", new AutoPlantGear());
 		
@@ -115,6 +120,13 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Gear Shifting", gearshifter.isHighGear());
 		SmartDashboard.putBoolean("Intake Flapping", intakeflap.isBallIntaking());
 		SmartDashboard.putBoolean("Climbing", climber.isClimbing());
+		
+		SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftDistance());
+		SmartDashboard.putNumber("Right Encoder", drivetrain.getRightDistance());
+		
+		SmartDashboard.putNumber("cEnc", conveyor.intakeMotor.getEncPosition());
+		SmartDashboard.putNumber("rEnc", shooter.shootMotorRight.getEncPosition());
+		SmartDashboard.putNumber("lEnc", shooter.shootMotorLeft.getEncPosition());
 		
 		SmartDashboard.putNumber("Robot Heading", sensors.getRobotHeading());
 		SmartDashboard.putNumber("Robot Velocity", sensors.getRobotVelocity());

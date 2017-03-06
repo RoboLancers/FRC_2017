@@ -12,13 +12,13 @@ public class MoveStraightEncoder extends Command {
     double startAngle;
     boolean leftFinished, rightFinished;
 
-    public MoveStraightEncoder(double distance, double power) {
+    public MoveStraightEncoder(double power, double distance) {
 		requires(Robot.drivetrain);
 		this.distanceInMeters = distance;
 		this.power = power;
 		this.startAngle = Robot.sensors.getRobotAngle();
     }
-    
+
     public MoveStraightEncoder(double distance, double power, double targetAngle) {
     	requires(Robot.drivetrain);
 		this.distanceInMeters = distance;
@@ -33,14 +33,15 @@ public class MoveStraightEncoder extends Command {
 
     @Override
     protected void execute() {
-		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, Robot.sensors.getRobotAngle(), startAngle)[1]);
-		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, Robot.sensors.getRobotAngle(), startAngle)[0]);
+    	double[] motorSpeed = RobotUtil.moveToTarget(power, Robot.sensors.getRobotAngle(), startAngle);
+    	Robot.drivetrain.setLeftPowers(motorSpeed[0]);
+		Robot.drivetrain.setRightPowers(motorSpeed[1]);
     }
 
     @Override
     protected boolean isFinished() {
-    	leftFinished = Math.abs(Robot.drivetrain.getLeftDistance()) > distanceInMeters;
-		rightFinished = Math.abs(Robot.drivetrain.getRightDistance()) > distanceInMeters;
+    	leftFinished = Math.abs(Robot.drivetrain.getLeftDistance()) > Math.abs(distanceInMeters);
+		rightFinished = Math.abs(Robot.drivetrain.getRightDistance()) > Math.abs(distanceInMeters);
 		return leftFinished || rightFinished;
     }
 
