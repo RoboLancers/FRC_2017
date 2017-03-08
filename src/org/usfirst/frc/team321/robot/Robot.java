@@ -116,20 +116,16 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
 		SmartDashboard.putString("Distance To Boiler", networkTable.getString("Distance To Boiler", "Not Detected"));
 
+		/*
 		SmartDashboard.putBoolean("Gear Holding", gearholder.isHolding());
 		SmartDashboard.putBoolean("Gear Shifting", gearshifter.isHighGear());
 		SmartDashboard.putBoolean("Intake Flapping", intakeflap.isBallIntaking());
 		SmartDashboard.putBoolean("Climbing", climber.isClimbing());
+		*/
 		
 		SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftDistance());
 		SmartDashboard.putNumber("Right Encoder", drivetrain.getRightDistance());
-		
-		SmartDashboard.putNumber("cEnc", conveyor.intakeMotor.getEncPosition());
-		SmartDashboard.putNumber("rEnc", shooter.shootMotorRight.getEncPosition());
-		SmartDashboard.putNumber("lEnc", shooter.shootMotorLeft.getEncPosition());
-		
-		SmartDashboard.putNumber("Robot Heading", sensors.getRobotHeading());
-		SmartDashboard.putNumber("Robot Velocity", sensors.getRobotVelocity());
+
 		SmartDashboard.putNumber("Displacement", sensors.getRobotDisplacement());
 		SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
 		
@@ -139,8 +135,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Driving" : "Climber Engaged");
 	
 		SmartDashboard.putNumber("Shooter Speed", JoystickUtil.getRudderYAxis());
-		SmartDashboard.putNumber("Left Joystick", -JoystickUtil.getLeftXAxisNormalized());
-		SmartDashboard.putNumber("Right Joystick", -JoystickUtil.getRightXAxisNormalized());
+		SmartDashboard.putNumber("Left Joystick", -JoystickUtil.getLeftYAxisNormalized());
+		SmartDashboard.putNumber("Right Joystick", -JoystickUtil.getRightYAxisNormalized());
 		
 		SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
 		

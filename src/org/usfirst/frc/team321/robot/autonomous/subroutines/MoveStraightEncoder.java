@@ -19,7 +19,7 @@ public class MoveStraightEncoder extends Command {
 		this.startAngle = Robot.sensors.getRobotAngle();
     }
 
-    public MoveStraightEncoder(double distance, double power, double targetAngle) {
+    public MoveStraightEncoder(double power, double distance, double targetAngle) {
     	requires(Robot.drivetrain);
 		this.distanceInMeters = distance;
 		this.power = power;

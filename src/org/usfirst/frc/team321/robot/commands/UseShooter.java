@@ -16,19 +16,10 @@ public class UseShooter extends Command {
 	private boolean hasFinished;
 	private double shooterVal;
 	
-	/*
-	 * Default
-	 */
 	public UseShooter(){
 		requires(Robot.shooter);
 		hasFinished = false;
 		shooterVal = 0;
-	}
-	
-	public UseShooter(double val){
-		requires(Robot.shooter);
-		hasFinished = false;
-		shooterVal = val;
 	}
 	
 	protected void initialize(){
@@ -36,7 +27,7 @@ public class UseShooter extends Command {
 	}
 	
 	protected void execute(){
-		Robot.shooter.setShooter(RobotUtil.range(shooterVal + JoystickUtil.getRudderYAxis(), -1, 1));
+		Robot.shooter.setShooter(RobotUtil.range(JoystickUtil.getRudderYAxis(), -1, 1));
 	}
 
 	protected void end(){

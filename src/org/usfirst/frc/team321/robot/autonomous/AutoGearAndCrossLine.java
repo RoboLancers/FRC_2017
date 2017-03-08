@@ -18,6 +18,6 @@ public class AutoGearAndCrossLine extends CommandGroup {
 		addSequential(new MoveTowardsPeg(0.7));
 		addSequential(new MoveStraightEncoder(-0.5, 0.85, leftVal * -45));
 		addSequential(new TurnInPlace(0, 2));
-		addSequential(new MoveStraightEncoder(1, 2));
+		addSequential(new MoveStraightEncoder(0.7, 2));
 	}
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveTowardsPeg extends Command {
 
 	private double power;
+	private double[] motorPower;
 	
 	public MoveTowardsPeg(double power) {
 		requires(Robot.drivetrain);
@@ -21,10 +22,11 @@ public class MoveTowardsPeg extends Command {
 
     protected void execute() {
     	if (Robot.camera.gearTargetDetected()) {
-    		Robot.drivetrain.setLeftPowers(RobotUtil.moveToTarget(power, RobotUtil.squareAndKeepSign(Robot.camera.gearTargetAngle()), 0)[0]);
-    		Robot.drivetrain.setRightPowers(RobotUtil.moveToTarget(power, RobotUtil.squareAndKeepSign(Robot.camera.gearTargetAngle()), 0)[1]);
+    		motorPower = RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle(), 0);
+    		Robot.drivetrain.setLeftPowers(motorPower[0]);
+    		Robot.drivetrain.setRightPowers(motorPower[1]);
     	} else {
-    		Robot.drivetrain.setAllPowers(0.2);
+    		Robot.drivetrain.setAllPowers(0.1);
     	}
     }
 
@@ -39,6 +41,6 @@ public class MoveTowardsPeg extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return !Robot.camera.gearTargetDetected() || Robot.sensors.isGearPenetrated();
+		return Robot.sensors.isGearPenetrated() || Math.abs(Robot.sensors.getRobotAngle()) > 25;
 	}
 }
