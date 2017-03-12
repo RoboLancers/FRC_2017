@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoPlantGear extends CommandGroup {
 	public AutoPlantGear() {
-		addSequential(new MoveTowardsPeg(0.5));
 		addSequential(new MoveStraightTime(0, 1));
-		addSequential(new MoveStraightTime(-0.5, 2));
+		addSequential(new MoveTowardsPeg(0.55));
+		addSequential(new MoveStraightTime(0, 1));
+		addSequential(new MoveStraightTime(-0.4, 1));
 		addSequential(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
 	}
 }

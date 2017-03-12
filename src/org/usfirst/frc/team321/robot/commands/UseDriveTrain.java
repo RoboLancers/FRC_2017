@@ -29,10 +29,10 @@ public class UseDriveTrain extends Command{
 	}
 	
 	protected void execute(){
-		/*
+		
 		switch(Drivetrain.driveMode){
 			case DRIVING:
-				
+				/*
 				if (Math.abs(Robot.drivetrain.getLeftRPM()) > Drivetrain.targetRPM && 
 						Math.abs(Robot.drivetrain.getRightRPM()) > Drivetrain.targetRPM &&
 						Math.signum(JoystickUtil.getLeftYAxisValue()) == Math.signum(JoystickUtil.getRightYAxisValue())) {
@@ -49,7 +49,22 @@ public class UseDriveTrain extends Command{
 			   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 				}
 		   		break;
-			
+		   		*/
+				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
+		   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
+		   		break;
+
+			case CLIMBING:
+				if (JoystickUtil.getLeftYAxisValue() > 0.1) {
+					Robot.climber.disengageClimber();
+				} else if (JoystickUtil.getLeftYAxisValue() < -0.1) {
+					Robot.climber.engageClimber();
+				}
+				
+				drivetrain.setLeftPowers(JoystickUtil.getRightYAxisNormalized()/2);
+				drivetrain.setRightPowers(JoystickUtil.getLeftYAxisNormalized()/2);
+			   	break;
+			/*
 			case AUTO_ADJUST:
 				if (Robot.camera.gearTargetDetected()) {
 					currentAngle = Robot.camera.gearTargetAngle();
@@ -73,27 +88,35 @@ public class UseDriveTrain extends Command{
 		    	}
 		    	
 				break;
-				
+				*/
+		   		
+		   		
 			default:
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
 		   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 		   		break;
-			
 		}
-		
+   		
 		if (Robot.sensors.isTrackingDistance() && Robot.sensors.hasDroveDistance(0.5)) {
 			Robot.sensors.stopTrackingDistance();
 			Robot.gearholder.closeDoor();
 		}
-		*/
 		
+		/*
 		if (Robot.climber.isClimbing()) {
-			drivetrain.setLeftPowers(-Math.abs(JoystickUtil.getLeftYAxisNormalized()));
-	   		drivetrain.setRightPowers(-Math.abs(JoystickUtil.getRightYAxisNormalized()));
+			if (JoystickUtil.getLeftYAxisValue() > 0.1) {
+				Climber.climberToggle.set(DoubleSolenoid.Value.kReverse);
+			} else if (JoystickUtil.getLeftYAxisValue() < -0.1) {
+				Climber.climberToggle.set(DoubleSolenoid.Value.kForward);
+			}
+			
+			drivetrain.setLeftPowers(-JoystickUtil.getRightYAxisNormalized());
+		   	drivetrain.setRightPowers(-JoystickUtil.getLeftYAxisNormalized());
 		} else {
 			drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
 	   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 		}
+		*/
 	}
 
 	@Override

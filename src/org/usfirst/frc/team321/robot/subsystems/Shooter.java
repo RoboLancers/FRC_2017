@@ -23,13 +23,14 @@ public class Shooter extends Subsystem {
 	public Shooter() {
 		shootMotorLeft = new CANTalon(RobotMap.SHOOT_MOTOR_A);
 		shootMotorRight = new CANTalon(RobotMap.SHOOT_MOTOR_B);
+		
 		/*
 		shootMotorLeft.changeControlMode(TalonControlMode.Speed);
 		shootMotorRight.changeControlMode(TalonControlMode.Follower);
 		shootMotorRight.set(shootMotorLeft.getDeviceID());
 		*/
-		shootMotorLeft.setVoltageRampRate(4);
-		shootMotorRight.setVoltageRampRate(4);
+		shootMotorLeft.setVoltageRampRate(6);
+		shootMotorRight.setVoltageRampRate(6);
 	}
 
 	public double velocityToRPM(double velocity) {

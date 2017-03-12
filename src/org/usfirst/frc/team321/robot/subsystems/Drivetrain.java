@@ -2,6 +2,7 @@ package org.usfirst.frc.team321.robot.subsystems;
 
 import org.usfirst.frc.team321.robot.RobotMap;
 import org.usfirst.frc.team321.robot.commands.UseDriveTrain;
+import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import com.ctre.CANTalon;
@@ -20,7 +21,6 @@ public class Drivetrain extends Subsystem {
 	public CANTalon leftFront, leftBack, rightFront, rightBack;
 	public Encoder leftEncoder, rightEncoder;
 	public static DriveMode driveMode;
-	public Counter leftCounter;
 	
     public final double wheelDiameter = 0.1016;
     public final double pulsePerRevolution = 256;
@@ -30,8 +30,6 @@ public class Drivetrain extends Subsystem {
     
 	public Drivetrain () {
 		super("Drive Train");
-		
-		//leftCounter = new Counter();
 		
 		leftFront = new CANTalon(RobotMap.LEFT_FRONT_MOTOR);
 		leftBack = new CANTalon(RobotMap.LEFT_BACK_MOTOR);
@@ -43,7 +41,7 @@ public class Drivetrain extends Subsystem {
 		//rightBack.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		//rightBack.set(rightFront.getDeviceID());
 		
-		leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_A, RobotMap.LEFT_ENCODER_B, true, Encoder.EncodingType.k4X);
+		leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_A, RobotMap.LEFT_ENCODER_B);
 		rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_A, RobotMap.RIGHT_ENCODER_B);
 		
 		leftEncoder.setDistancePerPulse(meterPerPulse);
@@ -58,7 +56,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public static enum DriveMode {
-		DRIVING, AUTO_ADJUST;
+		DRIVING, AUTO_ADJUST, CLIMBING;
 	} 
 	
 	public void setLeftPowers(double power){

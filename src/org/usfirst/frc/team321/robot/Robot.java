@@ -124,10 +124,13 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Intake Flapping", intakeflap.isBallIntaking());
 		SmartDashboard.putBoolean("Climbing", climber.isClimbing());
 		*/
+		
+		/*
 		SmartDashboard.putNumber("Left Front Output Voltage", Robot.drivetrain.rightFront.getOutputVoltage());
 		SmartDashboard.putNumber("Right Front Output Voltage", Robot.drivetrain.rightBack.getOutputVoltage());
 		SmartDashboard.putNumber("Right Front Output Voltage", Robot.drivetrain.leftBack.getOutputVoltage());
 		SmartDashboard.putNumber("Right Front Output Voltage", Robot.drivetrain.leftFront.getOutputVoltage());
+		*/
 		
 		//SmartDashboard.putNumber("Left Front Voltage", Robot.drivetrain.leftFront.getBusVoltage());
 		//SmartDashboard.putNumber("Right Front Voltage", Robot.drivetrain.rightFront.getBusVoltage());
@@ -148,10 +151,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Joystick", -JoystickUtil.getLeftYAxisNormalized());
 		SmartDashboard.putNumber("Right Joystick", -JoystickUtil.getRightYAxisNormalized());
 		
-		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
+		/*
+		SartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
 		SmartDashboard.putString("Gear Shifter", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Slow" : "Fast");
 		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
 		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Climber Engaged" : "Driving");
+		*/
 		
 		//SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
 		

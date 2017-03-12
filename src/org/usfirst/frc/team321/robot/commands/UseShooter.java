@@ -27,7 +27,7 @@ public class UseShooter extends Command {
 	}
 	
 	protected void execute(){
-		Robot.shooter.setShooter(RobotUtil.range(JoystickUtil.getRudderYAxis(), -1, 1));
+		Robot.shooter.setShooter(RobotUtil.range(JoystickUtil.getRudderYAxis(), -1, 1)); //15000 is max rpm
 	}
 
 	protected void end(){

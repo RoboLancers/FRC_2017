@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveTowardsPeg extends Command {
 
 	private double power;
+	private double seconds = 6;
 	private double[] motorPower;
 	Timer timer = new Timer();
 	
@@ -37,7 +38,7 @@ public class MoveTowardsPeg extends Command {
 
     protected void end() {
     	Robot.drivetrain.setAllPowers(0);
-    	if (timer.get() < 6) {
+    	if (timer.get() < seconds) {
             Robot.gearholder.openDoor();
     	}
     }
@@ -48,6 +49,6 @@ public class MoveTowardsPeg extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.sensors.isGearPenetrated() || timer.get() > 6;
+		return Robot.sensors.isGearPenetrated() || timer.get() > seconds;
 	}
 }

@@ -16,7 +16,7 @@ public class JoystickUtil {
 	}
 
 	public static double getLeftYAxisNormalized(){
-		return RobotUtil.squareAndKeepSign(getLeftYAxisValue());
+		return RobotUtil.squareKeepSign(getLeftYAxisValue());
 	}
 	
 	public static double getRightYAxisValue(){
@@ -28,7 +28,7 @@ public class JoystickUtil {
 	}
 	
 	public static double getRightYAxisNormalized(){
-		return RobotUtil.squareAndKeepSign(getRightYAxisValue());
+		return RobotUtil.squareKeepSign(getRightYAxisValue());
 	}
 	
 	public static double getLeftXAxisValue(){
@@ -40,7 +40,7 @@ public class JoystickUtil {
 	}
 	
 	public static double getLeftXAxisNormalized(){
-		return RobotUtil.squareAndKeepSign(getLeftXAxisValue());
+		return RobotUtil.squareKeepSign(getLeftXAxisValue());
 	}
 	
 	public static double getRightXAxisValue(){
@@ -52,7 +52,7 @@ public class JoystickUtil {
 	}
 	
 	public static double getRightXAxisNormalized(){
-		return RobotUtil.squareAndKeepSign(getRightXAxisValue());
+		return RobotUtil.squareKeepSign(getRightXAxisValue());
 	}
 	
 	public static double getRudderYAxis() {
