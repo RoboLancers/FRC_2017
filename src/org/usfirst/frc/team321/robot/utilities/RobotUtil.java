@@ -32,6 +32,14 @@ public class RobotUtil {
 		}
 	}
 	
+	public static double sqrtKeepSign(double num) {
+		if(num < 0){
+			return -(Math.sqrt(-num));
+		}else{
+			return Math.sqrt(num);
+		}
+	}
+	
 	/**
 	 * Calculates the robot's motor speed to move to a target/angle
 	 * 

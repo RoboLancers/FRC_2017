@@ -32,8 +32,7 @@ public class MoveStraightTime extends Command {
     }
 
     protected void execute() {
-    	Robot.drivetrain.setLeftPowers(Robot.sensors.moveInHeading(power, degrees)[0]);
-    	Robot.drivetrain.setRightPowers(Robot.sensors.moveInHeading(power, degrees)[1]);
+    	Robot.drivetrain.setAllPowers(power);
     }
 
     protected void end() {

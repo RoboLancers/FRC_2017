@@ -45,8 +45,8 @@ public class OI {
 		maniBtn[5].whileHeld(new SwitchDriveMode(DriveMode.AUTO_ADJUST));
 		
 		//Pneumatics
-		driveBtn[8].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
-		driveBtn[1].whenPressed(new DSolenoidToggle(Robot.gearshifter, GearShifter.gearShifter));
+		driveBtn[10].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
+		driveBtn[9].whenPressed(new DSolenoidToggle(Robot.gearshifter, GearShifter.gearShifter));
 		maniBtn[9].whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
 		maniBtn[10].whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
 

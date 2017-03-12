@@ -22,6 +22,8 @@ import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
 import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -102,10 +104,10 @@ public class Robot extends IterativeRobot {
 		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putString("Angle To Gear", "Not Detected");
-		networkTable.putString("Angle To Boiler", "Not Detected");
+		//networkTable.putString("Angle To Boiler", "Not Detected");
 		
 		SmartDashboard.putString("Angle To Gear", "Not Detected");
-		SmartDashboard.putString("Angle To Boiler", "Not Detected");
+		//SmartDashboard.putString("Angle To Boiler", "Not Detected");
 	}
 
 	/**
@@ -113,8 +115,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void displayRobotData() {
 		SmartDashboard.putString("Angle To Gear", networkTable.getString("Angle To Gear", "Not Detected"));		
-		SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
-		SmartDashboard.putString("Distance To Boiler", networkTable.getString("Distance To Boiler", "Not Detected"));
+		//SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
+		//SmartDashboard.putString("Distance To Boiler", networkTable.getString("Distance To Boiler", "Not Detected"));
 
 		/*
 		SmartDashboard.putBoolean("Gear Holding", gearholder.isHolding());
@@ -122,26 +124,37 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Intake Flapping", intakeflap.isBallIntaking());
 		SmartDashboard.putBoolean("Climbing", climber.isClimbing());
 		*/
+		SmartDashboard.putNumber("Left Front Output Voltage", Robot.drivetrain.rightFront.getOutputVoltage());
+		SmartDashboard.putNumber("Right Front Output Voltage", Robot.drivetrain.rightBack.getOutputVoltage());
+		SmartDashboard.putNumber("Right Front Output Voltage", Robot.drivetrain.leftBack.getOutputVoltage());
+		SmartDashboard.putNumber("Right Front Output Voltage", Robot.drivetrain.leftFront.getOutputVoltage());
 		
+		//SmartDashboard.putNumber("Left Front Voltage", Robot.drivetrain.leftFront.getBusVoltage());
+		//SmartDashboard.putNumber("Right Front Voltage", Robot.drivetrain.rightFront.getBusVoltage());
+		//SmartDashboard.putNumber("Left Back Voltage", Robot.drivetrain.leftBack.getBusVoltage());
+		//SmartDashboard.putNumber("Right Back Voltage", Robot.drivetrain.rightBack.getBusVoltage());
+		
+		SmartDashboard.putNumber("Robot Angle", sensors.getRobotAngle());
 		SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftDistance());
 		SmartDashboard.putNumber("Right Encoder", drivetrain.getRightDistance());
 
 		SmartDashboard.putNumber("Displacement", sensors.getRobotDisplacement());
 		SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
 		
-		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
-		SmartDashboard.putString("Gear Shifter", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Slow" : "Fast");
-		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
-		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Driving" : "Climber Engaged");
+		SmartDashboard.putBoolean("Gear Loaded", sensors.isGearLoaded());
+		SmartDashboard.putBoolean("Touch Pad", sensors.isGearPenetrated());
 	
 		SmartDashboard.putNumber("Shooter Speed", JoystickUtil.getRudderYAxis());
 		SmartDashboard.putNumber("Left Joystick", -JoystickUtil.getLeftYAxisNormalized());
 		SmartDashboard.putNumber("Right Joystick", -JoystickUtil.getRightYAxisNormalized());
 		
-		SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
+		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
+		SmartDashboard.putString("Gear Shifter", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Slow" : "Fast");
+		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
+		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Climber Engaged" : "Driving");
 		
-		SmartDashboard.putBoolean("Gear Loaded", sensors.isGearLoaded());
-		SmartDashboard.putBoolean("Touch Pad", sensors.isGearPenetrated());
+		//SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
+		
 	}
 	
 	/**
@@ -152,6 +165,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		new DSolenoidToggle(Robot.climber, Climber.climberToggle, DoubleSolenoid.Value.kForward);
+		new DSolenoidToggle(Robot.gearshifter, GearShifter.gearShifter, DoubleSolenoid.Value.kReverse);
 	}
 
 	@Override

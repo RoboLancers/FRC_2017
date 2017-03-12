@@ -29,9 +29,10 @@ public class UseDriveTrain extends Command{
 	}
 	
 	protected void execute(){
+		/*
 		switch(Drivetrain.driveMode){
 			case DRIVING:
-				/*
+				
 				if (Math.abs(Robot.drivetrain.getLeftRPM()) > Drivetrain.targetRPM && 
 						Math.abs(Robot.drivetrain.getRightRPM()) > Drivetrain.targetRPM &&
 						Math.signum(JoystickUtil.getLeftYAxisValue()) == Math.signum(JoystickUtil.getRightYAxisValue())) {
@@ -39,16 +40,20 @@ public class UseDriveTrain extends Command{
 				} else {
 					Robot.gearshifter.setLowGear();
 				}
-				*/
 				
-				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
-		   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
+				if (Robot.climber.isClimbing()) {
+					drivetrain.setLeftPowers(-Math.abs(JoystickUtil.getLeftYAxisNormalized()));
+			   		drivetrain.setRightPowers(-Math.abs(JoystickUtil.getRightYAxisNormalized()));
+				} else {
+					drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
+			   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
+				}
 		   		break;
 			
 			case AUTO_ADJUST:
 				if (Robot.camera.gearTargetDetected()) {
 					currentAngle = Robot.camera.gearTargetAngle();
-					motorSpeed = RobotUtil.moveToTarget(0.55, currentAngle, 0);
+					motorSpeed = RobotUtil.moveToTarget(0.55, RobotUtil.sqrtKeepSign(currentAngle), 0);
 					
 		    		Robot.drivetrain.setLeftPowers(motorSpeed[0]);
 		    		Robot.drivetrain.setRightPowers(motorSpeed[1]);
@@ -59,9 +64,10 @@ public class UseDriveTrain extends Command{
 		    		}
 		    	} else if (Robot.camera.boilerTargetDetected()){
 					currentAngle = Robot.camera.boilerTargetAngle();
+					motorSpeed = RobotUtil.moveToTarget(0, RobotUtil.sqrtKeepSign(currentAngle), 0);
 					
-					Robot.drivetrain.setLeftPowers((RobotUtil.moveToTarget(0, currentAngle, 0)[0]));
-		    		Robot.drivetrain.setRightPowers((RobotUtil.moveToTarget(0, currentAngle, 0)[1]));
+					Robot.drivetrain.setLeftPowers(motorSpeed[0]);
+		    		Robot.drivetrain.setRightPowers(motorSpeed[1]);
 		    	} else {
 		    		Robot.drivetrain.setAllPowers(0);
 		    	}
@@ -78,6 +84,15 @@ public class UseDriveTrain extends Command{
 		if (Robot.sensors.isTrackingDistance() && Robot.sensors.hasDroveDistance(0.5)) {
 			Robot.sensors.stopTrackingDistance();
 			Robot.gearholder.closeDoor();
+		}
+		*/
+		
+		if (Robot.climber.isClimbing()) {
+			drivetrain.setLeftPowers(-Math.abs(JoystickUtil.getLeftYAxisNormalized()));
+	   		drivetrain.setRightPowers(-Math.abs(JoystickUtil.getRightYAxisNormalized()));
+		} else {
+			drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
+	   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
 		}
 	}
 

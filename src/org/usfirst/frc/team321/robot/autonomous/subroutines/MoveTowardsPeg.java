@@ -3,21 +3,25 @@ package org.usfirst.frc.team321.robot.autonomous.subroutines;
 import org.usfirst.frc.team321.robot.Robot;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MoveTowardsPeg extends Command {
 
 	private double power;
 	private double[] motorPower;
+	Timer timer = new Timer();
 	
 	public MoveTowardsPeg(double power) {
 		requires(Robot.drivetrain);
-		requires(Robot.camera);
+		Robot.gearholder.closeDoor();
 		this.power = power;
     }
 
     protected void initialize() {
-
+    	Robot.sensors.resetNavX();
+    	timer.reset();
+    	timer.start();
     }
 
     protected void execute() {
@@ -26,13 +30,16 @@ public class MoveTowardsPeg extends Command {
     		Robot.drivetrain.setLeftPowers(motorPower[0]);
     		Robot.drivetrain.setRightPowers(motorPower[1]);
     	} else {
-    		Robot.drivetrain.setAllPowers(0.1);
+    		Robot.drivetrain.setLeftPowers(power);
+    		Robot.drivetrain.setRightPowers(power);
     	}
     }
 
     protected void end() {
     	Robot.drivetrain.setAllPowers(0);
-    	Robot.gearholder.openDoor();
+    	if (timer.get() < 6) {
+            Robot.gearholder.openDoor();
+    	}
     }
 
     protected void interrupted() {
@@ -41,6 +48,6 @@ public class MoveTowardsPeg extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.sensors.isGearPenetrated() || Math.abs(Robot.sensors.getRobotAngle()) > 25;
+		return Robot.sensors.isGearPenetrated() || timer.get() > 6;
 	}
 }
