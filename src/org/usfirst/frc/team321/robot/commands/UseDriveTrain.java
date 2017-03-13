@@ -3,20 +3,15 @@ package org.usfirst.frc.team321.robot.commands;
 import static org.usfirst.frc.team321.robot.Robot.drivetrain;
 
 import org.usfirst.frc.team321.robot.Robot;
-import org.usfirst.frc.team321.robot.subsystems.Climber;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain.DriveMode;
 import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
-import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class UseDriveTrain extends Command{
 	
 	private boolean hasFinished = false;
-	private double[] motorSpeed;
-	private double currentAngle = 0;
 	
 	public UseDriveTrain(){
 		requires(Robot.drivetrain);

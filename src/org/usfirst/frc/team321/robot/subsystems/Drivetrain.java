@@ -26,7 +26,6 @@ public class Drivetrain extends Subsystem {
     public final double pulsePerRevolution = 256;
     public final double wheelCircumference = wheelDiameter * Math.PI;
     public final double meterPerPulse = wheelCircumference / pulsePerRevolution;
-	public static double targetRPM = 500;
     
 	public Drivetrain () {
 		super("Drive Train");

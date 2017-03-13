@@ -46,7 +46,7 @@ public class OI {
 		driveBtn[10].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
 		
 		//Pneumatics
-		driveBtn[9].whenPressed(new DSolenoidToggle(Robot.gearshifter, GearShifter.gearShifter));
+		driveBtn[9].whileHeld(new DSolenoidHold(Robot.gearshifter, GearShifter.gearShifter, DoubleSolenoid.Value.kForward));
 		maniBtn[9].whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
 		maniBtn[10].whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
 
@@ -58,7 +58,7 @@ public class OI {
 		//debug buttons
 		maniBtn[11].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
 		maniBtn[12].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
-		//driveBtn[10].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
 		maniBtn[4].whileHeld(new UseShooter());
+		//driveBtn[10].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
 	}
 }

@@ -14,12 +14,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class UseShooter extends Command {
 
 	private boolean hasFinished;
-	private double shooterVal;
 	
 	public UseShooter(){
 		requires(Robot.shooter);
 		hasFinished = false;
-		shooterVal = 0;
 	}
 	
 	protected void initialize(){
@@ -27,7 +25,7 @@ public class UseShooter extends Command {
 	}
 	
 	protected void execute(){
-		Robot.shooter.setShooter(RobotUtil.range(JoystickUtil.getRudderYAxis(), -1, 1)); //15000 is max rpm
+		Robot.shooter.setShooter(RobotUtil.range(JoystickUtil.getRudderYAxis(), -1, 1));
 	}
 
 	protected void end(){

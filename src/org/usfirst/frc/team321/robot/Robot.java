@@ -1,13 +1,10 @@
 
 package org.usfirst.frc.team321.robot;
 
-import org.usfirst.frc.team321.robot.autonomous.AutoBallShoot;
 import org.usfirst.frc.team321.robot.autonomous.AutoCrossLine;
-import org.usfirst.frc.team321.robot.autonomous.AutoGearAndCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoMoveRobot;
 import org.usfirst.frc.team321.robot.autonomous.AutoPlantGear;
 import org.usfirst.frc.team321.robot.autonomous.AutoStandStill;
-import org.usfirst.frc.team321.robot.autonomous.AutoTurnTowardsTarget;
 import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
 import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
@@ -21,8 +18,6 @@ import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
 import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
-
-import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -93,12 +88,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		chooser.addDefault("Stand Still", new AutoStandStill());
-		chooser.addObject("Turn to Target", new AutoTurnTowardsTarget());
 		chooser.addObject("Move Forward Test", new AutoMoveRobot());
-		chooser.addObject("Left: Put Gear and Cross Line", new AutoGearAndCrossLine(true));
-		chooser.addObject("Right: Put Gear and Cross Line", new AutoGearAndCrossLine(false));
-		chooser.addObject("Left: Auto Ball Shoot", new AutoBallShoot(true));
-		chooser.addObject("Right: Auto Ball Shoot", new AutoBallShoot(false));
 		chooser.addObject("Cross the Line", new AutoCrossLine());
 		chooser.addObject("Place Gear", new AutoPlantGear());
 		
