@@ -4,7 +4,12 @@ package org.usfirst.frc.team321.robot;
 import org.usfirst.frc.team321.robot.autonomous.AutoCrossLine;
 import org.usfirst.frc.team321.robot.autonomous.AutoMoveRobot;
 import org.usfirst.frc.team321.robot.autonomous.AutoPlantGear;
+import org.usfirst.frc.team321.robot.autonomous.AutoShootBalls;
+import org.usfirst.frc.team321.robot.autonomous.AutoSideGear;
 import org.usfirst.frc.team321.robot.autonomous.AutoStandStill;
+import org.usfirst.frc.team321.robot.autonomous.MoveStraightTest;
+import org.usfirst.frc.team321.robot.autonomous.StartShooterTest;
+import org.usfirst.frc.team321.robot.autonomous.TurnTowardsGearTest;
 import org.usfirst.frc.team321.robot.commands.DSolenoidToggle;
 import org.usfirst.frc.team321.robot.subsystems.Camera;
 import org.usfirst.frc.team321.robot.subsystems.Climber;
@@ -18,6 +23,7 @@ import org.usfirst.frc.team321.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team321.robot.subsystems.Sensors;
 import org.usfirst.frc.team321.robot.subsystems.Shooter;
 import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
+import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -91,6 +97,13 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Move Forward Test", new AutoMoveRobot());
 		chooser.addObject("Cross the Line", new AutoCrossLine());
 		chooser.addObject("Place Gear", new AutoPlantGear());
+		chooser.addObject("Shoot Balls (Left)", new AutoShootBalls(true));
+		chooser.addObject("Shoot Balls (Right)", new AutoShootBalls(false));
+		chooser.addObject("Shooter Test", new StartShooterTest());
+		chooser.addObject("Turn Towards Gear Test", new TurnTowardsGearTest());
+		chooser.addObject("Side Gear (Left)", new AutoSideGear(true));
+		chooser.addObject("Side Gear (Right)", new AutoSideGear(false));
+		chooser.addObject("NavX Test", new MoveStraightTest());
 		
 		networkTable = NetworkTable.getTable("jetson");
 		networkTable.putString("Angle To Gear", "Not Detected");
@@ -104,7 +117,9 @@ public class Robot extends IterativeRobot {
 	 * Programmer created method that displays robot data
 	 */
 	public void displayRobotData() {
-		SmartDashboard.putString("Angle To Gear", networkTable.getString("Angle To Gear", "Not Detected"));		
+		try {
+			SmartDashboard.putString("Angle To Gear", networkTable.getString("Angle To Gear", "Not Detected"));
+		} catch (Exception e) { }		
 		//SmartDashboard.putString("Angle To Boiler", networkTable.getString("Angle To Boiler", "Not Detected"));
 		//SmartDashboard.putString("Distance To Boiler", networkTable.getString("Distance To Boiler", "Not Detected"));
 
@@ -127,28 +142,45 @@ public class Robot extends IterativeRobot {
 		//SmartDashboard.putNumber("Left Back Voltage", Robot.drivetrain.leftBack.getBusVoltage());
 		//SmartDashboard.putNumber("Right Back Voltage", Robot.drivetrain.rightBack.getBusVoltage());
 		
-		SmartDashboard.putNumber("Robot Angle", sensors.getRobotAngle());
-		SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftDistance());
-		SmartDashboard.putNumber("Right Encoder", drivetrain.getRightDistance());
+		try {
+			SmartDashboard.putNumber("Robot Angle", sensors.getRobotAngle());
+			SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftDistance());
+			SmartDashboard.putNumber("Right Encoder", drivetrain.getRightDistance());
 
-		SmartDashboard.putNumber("Displacement", sensors.getRobotDisplacement());
-		SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
+			SmartDashboard.putNumber("Displacement", sensors.getRobotDisplacement());
+			SmartDashboard.putBoolean("Autonomous Running", autonomousCommand.isRunning());
+			
+			SmartDashboard.putBoolean("Gear Loaded", sensors.isGearLoaded());
+			SmartDashboard.putBoolean("Touch Pad", sensors.isGearPenetrated());
+			
+			SmartDashboard.putNumber("Left Motor Speed", RobotUtil.moveToTarget(0.5, Robot.sensors.getRobotAngle(), 0)[1]);
+			SmartDashboard.putNumber("Right Motor Speed", RobotUtil.moveToTarget(0.5, Robot.sensors.getRobotAngle(), 0)[1]);
 		
-		SmartDashboard.putBoolean("Gear Loaded", sensors.isGearLoaded());
-		SmartDashboard.putBoolean("Touch Pad", sensors.isGearPenetrated());
-	
-		SmartDashboard.putNumber("Shooter Speed", JoystickUtil.getRudderYAxis());
-		SmartDashboard.putNumber("Left Joystick", -JoystickUtil.getLeftYAxisNormalized());
-		SmartDashboard.putNumber("Right Joystick", -JoystickUtil.getRightYAxisNormalized());
-		
+			SmartDashboard.putNumber("Shooter Speed", JoystickUtil.getRudderYAxis());
+			SmartDashboard.putNumber("Left Joystick", -JoystickUtil.getLeftYAxisNormalized());
+			SmartDashboard.putNumber("Right Joystick", -JoystickUtil.getRightYAxisNormalized());
+			
+			SmartDashboard.putNumber("Left Shooter Encoder", shooter.shootMotorLeft.getEncPosition());
+			SmartDashboard.putNumber("Left Shooter Velocity", shooter.shootMotorLeft.getEncPosition());
+		} catch (Exception e) { }
 		/*
-		SartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
+		SmartDashboard.putNumber("Left Front Encoder", drivetrain.leftFront.getEncPosition());
+		SmartDashboard.putNumber("Left Back Encoder", drivetrain.leftBack.getEncPosition());
+		SmartDashboard.putNumber("Right Front Encoder", drivetrain.rightFront.getEncPosition());
+		SmartDashboard.putNumber("Right Back Encoder", drivetrain.rightBack.getEncPosition());
+		SmartDashboard.putNumber("Conveyor Encoder", conveyor.intakeMotor.getEncPosition());
+		SmartDashboard.putNumber("Indexer Encoder", indexer.indexer.getEncPosition());
+		*/
+		/*
+		SmartDashboard.putString("Gear Holder", GearHolder.gearEjector.get() == DoubleSolenoid.Value.kForward ? "Held" : "Released");
 		SmartDashboard.putString("Gear Shifter", GearShifter.gearShifter.get() == DoubleSolenoid.Value.kForward ? "Slow" : "Fast");
 		SmartDashboard.putString("Intake Flap", IntakeFlap.intakeflap.get() == DoubleSolenoid.Value.kForward ? "Gear Intake" : "Ball Intake");
 		SmartDashboard.putString("Climber", Climber.climberToggle.get() == DoubleSolenoid.Value.kForward ? "Climber Engaged" : "Driving");
 		*/
 		
-		//SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
+		try {
+			SmartDashboard.putString("Drive Mode", Drivetrain.driveMode.toString());
+		} catch (Exception e) { }
 		
 	}
 	
@@ -213,6 +245,8 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		sensors.resetNavX();
+		
 		Robot.gearholder.closeDoor();
 		
 		autonomousCommand = (Command) chooser.getSelected();

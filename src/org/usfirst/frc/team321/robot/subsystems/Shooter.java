@@ -4,6 +4,7 @@ import org.usfirst.frc.team321.robot.RobotMap;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -24,6 +25,8 @@ public class Shooter extends Subsystem {
 		shootMotorLeft = new CANTalon(RobotMap.SHOOT_MOTOR_A);
 		shootMotorRight = new CANTalon(RobotMap.SHOOT_MOTOR_B);
 		
+		shootMotorLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		shootMotorRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		/*
 		shootMotorLeft.changeControlMode(TalonControlMode.Speed);
 		shootMotorRight.changeControlMode(TalonControlMode.Follower);

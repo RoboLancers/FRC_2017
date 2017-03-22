@@ -10,6 +10,7 @@ public class MoveStraightEncoder extends Command {
 	double power;
     double distanceInMeters;
     double startAngle;
+    boolean hasTargetAngle;
     boolean leftFinished, rightFinished;
 
     public MoveStraightEncoder(double power, double distance) {
@@ -17,6 +18,7 @@ public class MoveStraightEncoder extends Command {
 		this.distanceInMeters = distance;
 		this.power = power;
 		this.startAngle = Robot.sensors.getRobotAngle();
+		hasTargetAngle = false;
     }
 
     public MoveStraightEncoder(double power, double distance, double targetAngle) {
@@ -24,11 +26,15 @@ public class MoveStraightEncoder extends Command {
 		this.distanceInMeters = distance;
 		this.power = power;
 		this.startAngle = targetAngle;
+		hasTargetAngle = true;
     }
 
     @Override
     protected void initialize() {
-		Robot.drivetrain.resetEncoders();
+		if (!hasTargetAngle) {
+			this.startAngle = Robot.sensors.getRobotAngle();
+		}
+		Robot.sensors.navX.resetDisplacement();
     }
 
     @Override

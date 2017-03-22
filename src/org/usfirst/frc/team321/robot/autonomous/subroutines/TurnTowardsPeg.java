@@ -6,54 +6,52 @@ import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveTowardsPeg extends Command {
+public class TurnTowardsPeg extends Command {
 
 	private double power;
 	private double seconds = 6;
-	private double targetAngle;
-	private double[] motorPower;
+	private double currentAngle;
+	private double[] motorSpeed;
+	private boolean isLeft;
 	Timer timer = new Timer();
 	
-	public MoveTowardsPeg(double power, double timeout) {
+	public TurnTowardsPeg(double power, double timeout, boolean isLeft) {
 		requires(Robot.drivetrain);
 		Robot.gearholder.closeDoor();
 		this.power = power;
 		seconds = timeout;
+		this.isLeft = isLeft;
     }
 	
-	public MoveTowardsPeg(double power) {
+	public TurnTowardsPeg(double power) {
 		requires(Robot.drivetrain);
 		Robot.gearholder.closeDoor();
 		this.power = power;
 		seconds = 6;
+		isLeft = true;
 	}
 
     protected void initialize() {
-    	Robot.sensors.resetNavX();
+    	currentAngle = 1000;
     	timer.reset();
     	timer.start();
-		this.targetAngle = Robot.sensors.getRobotAngle();
     }
 
     protected void execute() {
     	if (Robot.camera.gearTargetDetected()) {
-    		motorPower = RobotUtil.moveToTarget(power, Robot.camera.gearTargetAngle() * 1.3, 0);
-    		Robot.drivetrain.setLeftPowers(motorPower[1]);
-    		Robot.drivetrain.setRightPowers(motorPower[0]);
+    		currentAngle = Robot.camera.gearTargetAngle();
+    		motorSpeed = RobotUtil.moveToTarget(power, currentAngle, 0);
+    		Robot.drivetrain.setLeftPowers(motorSpeed[1]);
+    		Robot.drivetrain.setRightPowers(motorSpeed[0]);
     	} else {
-    		/*
-    		Robot.drivetrain.setLeftPowers(power);
-    		Robot.drivetrain.setRightPowers(power);
-    		*/
-    		Robot.drivetrain.setAllPowers(power);
+    		currentAngle = 1000;
+        	Robot.drivetrain.setLeftPowers(power * (isLeft ? -1 : 1));
+        	Robot.drivetrain.setRightPowers(power * (isLeft ? 1 : -1));
     	}
     }
 
     protected void end() {
     	Robot.drivetrain.setAllPowers(0);
-    	if (timer.get() < seconds) {
-            Robot.gearholder.openDoor();
-    	}
     }
 
     protected void interrupted() {
@@ -62,6 +60,6 @@ public class MoveTowardsPeg extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.sensors.isGearPenetrated() || timer.get() > seconds;
+		return Math.abs(currentAngle) <= 8 || timer.get() > seconds;
 	}
 }

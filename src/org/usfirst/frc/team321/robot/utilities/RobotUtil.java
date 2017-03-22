@@ -53,8 +53,8 @@ public class RobotUtil {
 	public static double[] moveToTarget(double power, double currentAngle, double targetAngle) {
 		double[] motorSpeed = new double[2];
 		
-		motorSpeed[0] = RobotUtil.range(power - (currentAngle - targetAngle)/100, -1, 1);
-	    motorSpeed[1] = RobotUtil.range(power + (currentAngle - targetAngle)/100, -1, 1);
+		motorSpeed[0] = RobotUtil.range(power + (currentAngle - targetAngle)/100, -1, 1);
+	    motorSpeed[1] = RobotUtil.range(power - (currentAngle - targetAngle)/100, -1, 1);
 	    
 	    motorSpeed[0] = RobotUtil.floor(motorSpeed[0], 2);
 	    motorSpeed[1] = RobotUtil.floor(motorSpeed[1], 2);
@@ -75,20 +75,19 @@ public class RobotUtil {
 	}
 	
 	public static boolean isTimeTracking() {
-		return isTimeTracking();
+		return isTimeTracking;
 	}
 	
 	public static boolean isTimePassed(double seconds) {
 		if (timer.get() >= seconds) {
-			timer.stop();
-			isTimeTracking = false;
+			stopTimer();
 			return true;
 		}
 
 		return false;
 	}
 	
-	public static double[] arcadeDrive(double moveValue, double rotateValue, boolean squaredInputs) {
+	public static double[] arcadeDrive(double moveValue, double rotateValue) {
 	    double leftMotorSpeed = range(-moveValue + rotateValue, -1, 1);
 	    double rightMotorSpeed = range(-moveValue - rotateValue, -1, 1);
 	    

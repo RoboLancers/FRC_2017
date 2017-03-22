@@ -4,6 +4,7 @@ import org.usfirst.frc.team321.robot.RobotMap;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 

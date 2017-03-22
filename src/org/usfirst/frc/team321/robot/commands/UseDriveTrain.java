@@ -6,12 +6,14 @@ import org.usfirst.frc.team321.robot.Robot;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team321.robot.subsystems.Drivetrain.DriveMode;
 import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
+import org.usfirst.frc.team321.robot.utilities.RobotUtil;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class UseDriveTrain extends Command{
 	
 	private boolean hasFinished = false;
+	private double[] motorspeed;
 	
 	public UseDriveTrain(){
 		requires(Robot.drivetrain);
@@ -24,7 +26,7 @@ public class UseDriveTrain extends Command{
 	}
 	
 	protected void execute(){
-		
+		motorspeed = RobotUtil.arcadeDrive(JoystickUtil.getLeftYAxisValue(), JoystickUtil.getRightXAxisValue());
 		switch(Drivetrain.driveMode){
 			case DRIVING:
 				/*
@@ -45,45 +47,48 @@ public class UseDriveTrain extends Command{
 				}
 		   		break;
 		   		*/
+				/*
 				drivetrain.setLeftPowers(-JoystickUtil.getLeftYAxisNormalized());
 		   		drivetrain.setRightPowers(-JoystickUtil.getRightYAxisNormalized());
-		   		break;
-
-			case CLIMBING:
-				if (JoystickUtil.getLeftYAxisValue() > 0.1) {
-					Robot.climber.disengageClimber();
-				} else if (JoystickUtil.getLeftYAxisValue() < -0.1) {
-					Robot.climber.engageClimber();
-				}
+		   		*/
+				drivetrain.setLeftPowers(motorspeed[0]);
+		   		drivetrain.setRightPowers(motorspeed[1]);
 				
-				drivetrain.setLeftPowers(JoystickUtil.getRightYAxisNormalized()/2);
-				drivetrain.setRightPowers(JoystickUtil.getLeftYAxisNormalized()/2);
+		   		break;
+		   		
+			case CLIMBING:
+				if (JoystickUtil.getRawLeftYAxisValue() <= -0.03 || JoystickUtil.getRawRightXAxisValue() >= 0.3) {
+					Robot.climber.engageClimber();
+				} else {
+					Robot.climber.disengageClimber();
+				}
+
+				drivetrain.setLeftPowers(-motorspeed[1]);
+				drivetrain.setRightPowers(-motorspeed[0]);
 			   	break;
-			/*
+			
 			case AUTO_ADJUST:
 				if (Robot.camera.gearTargetDetected()) {
-					currentAngle = Robot.camera.gearTargetAngle();
-					motorSpeed = RobotUtil.moveToTarget(0.55, RobotUtil.sqrtKeepSign(currentAngle), 0);
+					motorspeed = RobotUtil.moveToTarget(0.55, Robot.camera.gearTargetAngle(), 0);
 					
-		    		Robot.drivetrain.setLeftPowers(motorSpeed[0]);
-		    		Robot.drivetrain.setRightPowers(motorSpeed[1]);
+		    		Robot.drivetrain.setLeftPowers(motorspeed[1]);
+		    		Robot.drivetrain.setRightPowers(motorspeed[0]);
 		    		
 		    		if (Robot.sensors.isGearLoaded() && Robot.sensors.isGearPenetrated()) {
 		    			Robot.gearholder.openDoor();
 		    			Robot.sensors.startTrackingDistance();
 		    		}
-		    	} else if (Robot.camera.boilerTargetDetected()){
-					currentAngle = Robot.camera.boilerTargetAngle();
-					motorSpeed = RobotUtil.moveToTarget(0, RobotUtil.sqrtKeepSign(currentAngle), 0);
+		    	} /*else if (Robot.camera.boilerTargetDetected()){
+					motorspeed = RobotUtil.moveToTarget(0, Robot.camera.boilerTargetAngle(), 0);
 					
-					Robot.drivetrain.setLeftPowers(motorSpeed[0]);
-		    		Robot.drivetrain.setRightPowers(motorSpeed[1]);
-		    	} else {
+					Robot.drivetrain.setLeftPowers(motorspeed[0]);
+		    		Robot.drivetrain.setRightPowers(motorspeed[1]);
+		    	} */else {
 		    		Robot.drivetrain.setAllPowers(0);
 		    	}
 		    	
 				break;
-				*/
+				
 		   		
 		   		
 			default:
@@ -92,6 +97,7 @@ public class UseDriveTrain extends Command{
 		   		break;
 		}
    		
+		
 		if (Robot.sensors.isTrackingDistance() && Robot.sensors.hasDroveDistance(0.5)) {
 			Robot.sensors.stopTrackingDistance();
 			Robot.gearholder.closeDoor();

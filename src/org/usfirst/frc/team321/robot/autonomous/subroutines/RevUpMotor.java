@@ -2,30 +2,29 @@ package org.usfirst.frc.team321.robot.autonomous.subroutines;
 
 import org.usfirst.frc.team321.robot.Robot;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ShootBall extends Command {
-
-	private Timer timer = new Timer();
-	private double time = 0;
+public class RevUpMotor extends Command {
+	private boolean isMotorRunning;
 	
-	public ShootBall(double time) {
-		requires(Robot.shooter);
-		this.time = time;
+	public RevUpMotor(boolean isRunning) {
+		isMotorRunning = isRunning;
     }
 
     protected void initialize() {
-    	timer.reset();
-    	timer.start();
+    	if (isMotorRunning) {
+    		Robot.shooter.setShooter(0.87);
+    	} else {
+    		Robot.shooter.setShooter(0);
+    	}
     }
 
     protected void execute() {
-    	Robot.conveyor.intakeMotor.set(1);
+
     }
 
     protected void end() {
-    	Robot.conveyor.intakeMotor.set(0);
+    	
     }
 
     protected void interrupted() {
@@ -34,6 +33,6 @@ public class ShootBall extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return timer.get() > time;
+		return true;
 	}
 }

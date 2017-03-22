@@ -6,6 +6,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoCrossLine extends CommandGroup {
 	public AutoCrossLine() {
-		addSequential(new MoveStraightTime(0.7, 3));
+		addSequential(new MoveStraightTime(0.7, 5));
 	}
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveStraightTime extends Command {
 	
 	private Timer timer = new Timer();
+	private boolean hasRobotAngle;
 	public double degrees;
 	public double power;
 	public double seconds;
@@ -17,18 +18,22 @@ public class MoveStraightTime extends Command {
 		this.power = power;
 		this.degrees = degrees;
 		this.seconds = seconds;
+		hasRobotAngle = true;
     }
 	
 	public MoveStraightTime(double power, double seconds) {
 		requires(Robot.drivetrain);
 		this.power = power;
-		this.degrees = Robot.sensors.getRobotAngle();
 		this.seconds = seconds;
+		hasRobotAngle = false;
 	}
 
     protected void initialize() {
     	timer.reset();
     	timer.start();
+    	if (hasRobotAngle) {
+    		this.degrees = Robot.sensors.getRobotAngle();
+    	}
     }
 
     protected void execute() {

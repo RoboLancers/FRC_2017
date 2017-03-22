@@ -20,7 +20,7 @@ public class Drivetrain extends Subsystem {
 	
 	public CANTalon leftFront, leftBack, rightFront, rightBack;
 	public Encoder leftEncoder, rightEncoder;
-	public static DriveMode driveMode;
+	public static DriveMode driveMode = DriveMode.DRIVING;
 	
     public final double wheelDiameter = 0.1016;
     public final double pulsePerRevolution = 256;
@@ -59,14 +59,14 @@ public class Drivetrain extends Subsystem {
 	} 
 	
 	public void setLeftPowers(double power){
-		power = power * 0.8;
+		power = power * 0.90;
 		
 		leftFront.set(RobotUtil.range(power, -1, 1));
 		leftBack.set(RobotUtil.range(power, -1, 1));
 	}
 	
 	public void setRightPowers(double power){
-		power = power * -0.8;
+		power = power * -0.90;
 		
 		rightFront.set(RobotUtil.range(power, -1, 1));
 		rightBack.set(RobotUtil.range(power, -1, 1));

@@ -14,6 +14,10 @@ public class JoystickUtil {
 			return 0;
 		}
 	}
+	
+	public static double getRawLeftYAxisValue() {
+		return OI.driveStick.getRawAxis(1);
+	}
 
 	public static double getLeftYAxisNormalized(){
 		return RobotUtil.squareKeepSign(getLeftYAxisValue());
@@ -25,6 +29,10 @@ public class JoystickUtil {
 		}else{
 			return 0;
 		}
+	}
+	
+	public static double getRawRightYAxisValue() {
+		return OI.driveStick.getRawAxis(4);
 	}
 	
 	public static double getRightYAxisNormalized(){
@@ -39,6 +47,10 @@ public class JoystickUtil {
 		}
 	}
 	
+	public static double getRawLeftXAxisValue() {
+		return OI.driveStick.getRawAxis(0);
+	}
+	
 	public static double getLeftXAxisNormalized(){
 		return RobotUtil.squareKeepSign(getLeftXAxisValue());
 	}
@@ -49,6 +61,10 @@ public class JoystickUtil {
 		}else{
 			return 0;
 		}
+	}
+	
+	public static double getRawRightXAxisValue(){
+		return OI.driveStick.getRawAxis(3);
 	}
 	
 	public static double getRightXAxisNormalized(){

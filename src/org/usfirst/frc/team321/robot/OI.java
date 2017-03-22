@@ -43,22 +43,22 @@ public class OI {
 		
 		//Drive Modes
 		maniBtn[5].whileHeld(new SwitchDriveMode(DriveMode.AUTO_ADJUST));
-		driveBtn[10].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
+		driveBtn[7].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
 		
 		//Pneumatics
-		driveBtn[9].whileHeld(new DSolenoidHold(Robot.gearshifter, GearShifter.gearShifter, DoubleSolenoid.Value.kForward));
+		driveBtn[8].whileHeld(new DSolenoidHold(Robot.gearshifter, GearShifter.gearShifter, DoubleSolenoid.Value.kForward));
 		maniBtn[9].whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
 		maniBtn[10].whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
 
 		//Mechanisms
-		maniBtn[7].whileHeld(new UseConveyor(-1));
 		maniBtn[1].whileHeld(new GroupFlapShooter());
 		maniBtn[2].whileHeld(new GroupConveyerIndexer(0.7));
 		
 		//debug buttons
+		maniBtn[7].whileHeld(new UseConveyor(-1));
 		maniBtn[11].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
 		maniBtn[12].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
 		maniBtn[4].whileHeld(new UseShooter());
-		//driveBtn[10].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
+		driveBtn[10].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
 	}
 }
