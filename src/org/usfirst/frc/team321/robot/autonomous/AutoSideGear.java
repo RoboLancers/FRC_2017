@@ -1,7 +1,7 @@
 package org.usfirst.frc.team321.robot.autonomous;
 
 import org.usfirst.frc.team321.robot.Robot;
-import org.usfirst.frc.team321.robot.autonomous.subroutines.MoveForward;
+import org.usfirst.frc.team321.robot.autonomous.subroutines.MoveForwardTime;
 import org.usfirst.frc.team321.robot.autonomous.subroutines.MoveStraightTime;
 import org.usfirst.frc.team321.robot.autonomous.subroutines.MoveTowardsPeg;
 import org.usfirst.frc.team321.robot.autonomous.subroutines.TurnTowardsPeg;
@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoSideGear extends CommandGroup {
 	public AutoSideGear(boolean isLeft) {
-		addSequential(new MoveForward(0.5, 2.5));
-		//addSequential(new MoveStraightEncoder(0.7, 2.64));
+		addSequential(new MoveForwardTime(0.5, 2.5));
 		addSequential(new TurnUntilPeg(0.3, 4, isLeft));
 		addSequential(new TurnTowardsPeg(0.3, 4, isLeft));
 		addSequential(new MoveTowardsPeg(0.6, 3));

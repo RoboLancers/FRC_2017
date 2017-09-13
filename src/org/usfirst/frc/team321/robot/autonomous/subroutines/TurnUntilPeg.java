@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnUntilPeg extends Command {
+
+	Timer timer = new Timer();
 	private double power;
 	private double seconds = 6;
 	private boolean isLeft;
-	Timer timer = new Timer();
 	
-	//Is the peg on the left?
 	public TurnUntilPeg(double power, double timeout, boolean isLeft) {
 		requires(Robot.drivetrain);
 		Robot.gearholder.closeDoor();

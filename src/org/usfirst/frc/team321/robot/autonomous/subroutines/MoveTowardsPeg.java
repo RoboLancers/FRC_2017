@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveTowardsPeg extends Command {
 
 	private double power;
-	private double seconds = 6;
-	private double targetAngle;
+	private double timeout = 6;
 	private double[] motorPower;
 	Timer timer = new Timer();
 	
@@ -18,21 +17,20 @@ public class MoveTowardsPeg extends Command {
 		requires(Robot.drivetrain);
 		Robot.gearholder.closeDoor();
 		this.power = power;
-		seconds = timeout;
+		this.timeout = timeout;
     }
 	
 	public MoveTowardsPeg(double power) {
 		requires(Robot.drivetrain);
 		Robot.gearholder.closeDoor();
 		this.power = power;
-		seconds = 6;
+		this.timeout = 6;
 	}
 
     protected void initialize() {
     	Robot.sensors.resetNavX();
     	timer.reset();
     	timer.start();
-		this.targetAngle = Robot.sensors.getRobotAngle();
     }
 
     protected void execute() {
@@ -41,17 +39,13 @@ public class MoveTowardsPeg extends Command {
     		Robot.drivetrain.setLeftPowers(motorPower[1]);
     		Robot.drivetrain.setRightPowers(motorPower[0]);
     	} else {
-    		/*
-    		Robot.drivetrain.setLeftPowers(power);
-    		Robot.drivetrain.setRightPowers(power);
-    		*/
     		Robot.drivetrain.setAllPowers(power);
     	}
     }
 
     protected void end() {
     	Robot.drivetrain.setAllPowers(0);
-    	if (timer.get() < seconds) {
+    	if (timer.get() < timeout) {
             Robot.gearholder.openDoor();
     	}
     }
@@ -62,6 +56,6 @@ public class MoveTowardsPeg extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.sensors.isGearPenetrated() || timer.get() > seconds;
+		return Robot.sensors.isGearPenetrated() || timer.get() > timeout;
 	}
 }

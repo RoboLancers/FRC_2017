@@ -12,53 +12,41 @@ import org.usfirst.frc.team321.robot.subsystems.Drivetrain.DriveMode;
 import org.usfirst.frc.team321.robot.subsystems.GearHolder;
 import org.usfirst.frc.team321.robot.subsystems.GearShifter;
 import org.usfirst.frc.team321.robot.subsystems.IntakeFlap;
+import org.usfirst.frc.team321.robot.utilities.FlightStick;
+import org.usfirst.frc.team321.robot.utilities.XBoxController;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	
-	public static Joystick driveStick, maniStick;
-	public static JoystickButton[] driveBtn, maniBtn;
+
+	public static XBoxController xboxController = new XBoxController(0);
+	public static FlightStick flightStick = new FlightStick(1);
 	
 	public OI(){
-		driveStick = new Joystick(0);
-		maniStick = new Joystick(1);
-		
-		driveBtn = new JoystickButton[13];
-		maniBtn = new JoystickButton[13];
-		
-		for(int i = 1; i < driveBtn.length; i++){ 
-			driveBtn[i] = new JoystickButton(driveStick, i);	
-		}
-		
-		for(int i = 1; i < maniBtn.length; i++){
-			maniBtn[i] = new JoystickButton(maniStick, i);
-		}
 		
 		//Drive Modes
-		maniBtn[5].whileHeld(new SwitchDriveMode(DriveMode.AUTO_ADJUST));
-		driveBtn[7].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
+		flightStick.topLeft().whileHeld(new SwitchDriveMode(DriveMode.AUTO_ADJUST));
+		//driveBtn[JoystickUtil.LT].whileHeld(new SwitchDriveMode(DriveMode.CLIMBING));
 		
 		//Pneumatics
-		driveBtn[8].whileHeld(new DSolenoidHold(Robot.gearshifter, GearShifter.gearShifter, DoubleSolenoid.Value.kForward));
-		maniBtn[9].whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
-		maniBtn[10].whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
+		xboxController.RT().whileHeld(new DSolenoidHold(Robot.gearshifter, GearShifter.gearShifter, DoubleSolenoid.Value.kForward));
+		flightStick.farMiddle().whileHeld(new DSolenoidHold(Robot.gearholder, GearHolder.gearEjector, DoubleSolenoid.Value.kForward));
+		flightStick.innerMiddle().whileHeld(new DSolenoidHold(Robot.intakeflap, IntakeFlap.intakeflap, DoubleSolenoid.Value.kForward));
 
 		//Mechanisms
-		maniBtn[1].whileHeld(new GroupFlapShooter());
-		maniBtn[2].whileHeld(new GroupConveyerIndexer(0.7));
+		flightStick.trigger().whileHeld(new GroupFlapShooter());
+		flightStick.shooter().whileHeld(new GroupConveyerIndexer(0.7));
 		
 		//debug buttons
-		maniBtn[7].whileHeld(new UseConveyor(-1));
-		maniBtn[11].whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
-		maniBtn[12].whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
-		maniBtn[4].whileHeld(new UseShooter());
-		driveBtn[10].whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
+		flightStick.farTop().whileHeld(new UseConveyor(-1));
+		flightStick.farBottom().whenPressed(new DSolenoidToggle(Robot.gearholder, GearHolder.gearEjector));
+		flightStick.innerMiddle().whenPressed(new DSolenoidToggle(Robot.intakeflap, IntakeFlap.intakeflap));
+		flightStick.bottomRight().whileHeld(new UseShooter());
+		xboxController.RB().whenPressed(new DSolenoidToggle(Robot.climber, Climber.climberToggle));
+		
 	}
 }

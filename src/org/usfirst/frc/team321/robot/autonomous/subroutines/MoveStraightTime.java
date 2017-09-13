@@ -29,11 +29,12 @@ public class MoveStraightTime extends Command {
 	}
 
     protected void initialize() {
-    	timer.reset();
-    	timer.start();
     	if (hasRobotAngle) {
     		this.degrees = Robot.sensors.getRobotAngle();
     	}
+    	
+    	timer.reset();
+    	timer.start();
     }
 
     protected void execute() {
@@ -45,11 +46,11 @@ public class MoveStraightTime extends Command {
     }
 
     protected void interrupted() {
-    	end();
+    	Robot.drivetrain.setAllPowers(0);
     }
 
 	protected boolean isFinished() {
-		return timer.get() > seconds;
+		return timer.get() >= seconds;
 	}
 
 }

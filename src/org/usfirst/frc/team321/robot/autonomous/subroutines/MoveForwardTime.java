@@ -5,14 +5,14 @@ import org.usfirst.frc.team321.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveForward extends Command {
+public class MoveForwardTime extends Command {
 
 	private Timer timer = new Timer();
 	public double power;
 	public double seconds;
 	public boolean hasFinished = false;
 	
-	public MoveForward(double power, double seconds) {
+	public MoveForwardTime(double power, double seconds) {
 		requires(Robot.drivetrain);
 		this.power = power;
 		this.seconds = seconds;

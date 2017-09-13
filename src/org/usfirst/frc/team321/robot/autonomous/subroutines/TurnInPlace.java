@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnInPlace extends Command {
+	
 	private Timer timer = new Timer();
 	private double degrees;
 	private double seconds;
@@ -34,6 +35,6 @@ public class TurnInPlace extends Command {
 	
 	@Override
 	protected boolean isFinished() {
-		return timer.get() > seconds;
+		return timer.get() >= seconds;
 	}
 }

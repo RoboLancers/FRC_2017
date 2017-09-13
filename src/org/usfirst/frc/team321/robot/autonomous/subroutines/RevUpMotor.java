@@ -5,6 +5,7 @@ import org.usfirst.frc.team321.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class RevUpMotor extends Command {
+	
 	private boolean isMotorRunning;
 	
 	public RevUpMotor(boolean isRunning) {

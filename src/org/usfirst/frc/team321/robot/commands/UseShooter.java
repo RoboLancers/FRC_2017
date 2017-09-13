@@ -1,5 +1,6 @@
 package org.usfirst.frc.team321.robot.commands;
 
+import org.usfirst.frc.team321.robot.OI;
 import org.usfirst.frc.team321.robot.Robot;
 import org.usfirst.frc.team321.robot.utilities.JoystickUtil;
 import org.usfirst.frc.team321.robot.utilities.RobotUtil;
@@ -25,7 +26,7 @@ public class UseShooter extends Command {
 	}
 	
 	protected void execute(){
-		Robot.shooter.setShooter(RobotUtil.range(JoystickUtil.getRudderYAxis(), -1, 1));
+		Robot.shooter.setShooter(RobotUtil.range(OI.flightStick.getRudderAxis(), -1, 1));
 	}
 
 	protected void end(){

@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnTowardsPeg extends Command {
 
+	Timer timer = new Timer();
 	private double power;
 	private double seconds = 6;
 	private double currentAngle;
 	private double[] motorSpeed;
 	private boolean isLeft;
-	Timer timer = new Timer();
 	
 	public TurnTowardsPeg(double power, double timeout, boolean isLeft) {
 		requires(Robot.drivetrain);

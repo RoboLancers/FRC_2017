@@ -11,9 +11,9 @@ public class RobotMap {
 	
 	//Drivetrain Motors
 	public static final int LEFT_FRONT_MOTOR = 4;
-	public static final int LEFT_BACK_MOTOR = 8;
+	public static final int LEFT_BACK_MOTOR = 6;
 	
-	public static final int RIGHT_FRONT_MOTOR = 6;
+	public static final int RIGHT_FRONT_MOTOR = 8;
 	public static final int RIGHT_BACK_MOTOR = 5;
 	
 	//Encoder Ports
@@ -24,9 +24,9 @@ public class RobotMap {
 	public static final int RIGHT_ENCODER_B = 9;
 	
 	//Subsystem Motors
-	public static final int CONVEYOR_MOTOR = 1;
+	public static final int CONVEYOR_MOTOR = 3;
 	public static final int SHOOT_MOTOR_A = 2;
-	public static final int SHOOT_MOTOR_B = 3;
+	public static final int SHOOT_MOTOR_B = 1;
 	public static final int INDEXER_MOTOR = 7;
 
 	//Compressor
